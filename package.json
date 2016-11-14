@@ -1,0 +1,8 @@
+{
+  "name": "pro201-last-project",
+  "version": "0.0.1",
+  "description": "pro201 last project",
+  "dependencies": {
+    "express": "^4.10.2"
+  }
+}
