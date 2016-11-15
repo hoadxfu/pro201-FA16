@@ -1,10 +1,18 @@
-var app = require('express')();
-var http = require('http').Server(app);
+var express = require('express');
+var app = express();
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
+var port = process.env.PORT || 3000;
 
-app.get('/', function(req, res){
-  res.send('<h1>Hello world</h1>');
+server.listen(port, function() {
+    console.log('Server listening at port %d', port);
 });
 
-http.listen(3000, function(){
-  console.log('listening on *:3000');
+// Routingjs
+app.use(express.static(__dirname + '/public'));
+
+io.on('connection', function(socket) {
+    socket.on('chat message', function(msg) {
+        io.emit('chat message', msg);
+    });
 });
