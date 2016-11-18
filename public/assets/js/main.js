@@ -68,26 +68,26 @@ $(document).ready(function() {
         drawTank(data.usercolor, data.userXPos, data.userYPos);
     });
 
-    $(document).bind('keydown', function(e) {
-        if (e.keyCode == 37) {
-            drawTank(usercolor, )
-        }
-        if (e.keyCode == 38) {
-            box.animate({
-                top: "-=5000"
-            }, 3000);
-        }
-        if (e.keyCode == 39) {
-            box.animate({
-                left: "+=5000"
-            }, 3000);
-        }
-        if (e.keyCode == 40) {
-            box.animate({
-                top: "+=5000"
-            }, 3000);
-        }
-    });
+//     $(document).bind('keydown', function(e) {
+//         if (e.keyCode == 37) {
+//             drawTank(usercolor, )
+//         }
+//         if (e.keyCode == 38) {
+//             box.animate({
+//                 top: "-=5000"
+//             }, 3000);
+//         }
+//         if (e.keyCode == 39) {
+//             box.animate({
+//                 left: "+=5000"
+//             }, 3000);
+//         }
+//         if (e.keyCode == 40) {
+//             box.animate({
+//                 top: "+=5000"
+//             }, 3000);
+//         }
+//     });
 
     socket.on('logout', function(data) {
         clear(data.userXPos, data.userYPos);
