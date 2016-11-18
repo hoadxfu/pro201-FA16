@@ -8,70 +8,31 @@
         <!-- Font -->
         <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 
-        <style>
-            * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-            }
-            body {
-                font: 13px Helvetica, Arial;
-            }
-            form {
-                background: #000;
-                padding: 3px;
-                position: fixed;
-                bottom: 0;
-                width: 100%;
-            }
-            form input {
-                border: 0;
-                padding: 10px;
-                width: 90%;
-                margin-right: 0.5%;
-            }
-            form button {
-                width: 9%;
-                background: rgb(130, 224, 255);
-                border: none;
-                padding: 10px;
-            }
-            #messages {
-                list-style-type: none;
-                margin: 0;
-                padding: 0;
-            }
-            #messages li {
-                padding: 5px 10px;
-            }
-            #messages li:nth-child(odd) {
-                background: #eee;
-            }
+        <!-- main css -->
+        <link href="assets/css/style.css" rel="stylesheet">
 
-        </style>
     </head>
     <body>
-        <ul id="messages"></ul>
-        <form action="">
-            <input id="m" autocomplete="off"/>
-            <button>Send</button>
-        </form>
+        <div class="login">
+            <form method="post" id="login-form">
+                <input type="text" name="username" placeholder="Enter your name..."/>
+            </form>
+        </div>
+        <div class="game">
+            <!-- <ul id="messages"></ul>
+            <form method="post" id="msg-form">
+                <input id="m" autocomplete="off" placeholder="Enter your msg"/>
+            </form> -->
+            <canvas id="game-area"></canvas>
+        </div>
         <!-- Define socket.io -->
         <script src="../socket.io/socket.io.js"></script>
 
         <!-- jQuery -->
         <script src="assets/js/jquery-3.1.1.min.js"></script>
 
-        <script>
-            var socket = io();
-            $('form').submit(function() {
-                socket.emit('chat message', $('#m').val());
-                $('#m').val('');
-                return false;
-            });
-            socket.on('chat message', function(msg){
-                $('#messages').append($('<li>').text(msg));
-              });
-        </script>
+        <!-- mainjs -->
+        <script src="assets/js/main.js"></script>
+
     </body>
 </html>

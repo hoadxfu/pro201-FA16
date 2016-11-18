@@ -11,8 +11,33 @@ server.listen(port, function() {
 // Routingjs
 app.use(express.static(__dirname + '/public'));
 
+var numUsers = 0;
+
 io.on('connection', function(socket) {
-    socket.on('chat message', function(msg) {
-        io.emit('chat message', msg);
+
+    // when the client emits 'add user', this listens and executes
+    socket.on('add user', function(data) {
+        // we store the username in the socket session for this client
+        socket.username = data.username;
+        socket.usercolor = data.usercolor;
+        socket.userXPos = data.userXPos;
+        socket.userYPos = data.userYPos;
+        ++numUsers;
+        io.sockets.emit('draw tank', {
+            username: data.username,
+            usercolor: data.usercolor,
+            userXPos: data.userXPos,
+            userYPos: data.userYPos
+        });
+    });
+
+    // when a user disconnect
+    socket.on('disconnect', function () {
+        io.sockets.emit('logout', {
+            username: socket.username,
+            usercolor: socket.usercolor,
+            userXPos: socket.userXPos,
+            userYPos: socket.userYPos
+        });
     });
 });
