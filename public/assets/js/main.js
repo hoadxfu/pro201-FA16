@@ -1,8 +1,3 @@
-(function() {
-    var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
-    window.requestAnimationFrame = requestAnimationFrame;
-})();
-
 $(document).ready(function() {
     // define
     var _COLORS = [
@@ -22,8 +17,6 @@ $(document).ready(function() {
     _gameArea.height = 630;
     var ctx = _gameArea.getContext('2d');
 
-    var connected = false;
-
     function User(name, color, xPos, yPos) {
         this.name = name;
         this.color = color;
@@ -34,27 +27,23 @@ $(document).ready(function() {
     var keys = [];
 
     // get key
-    window.addEventListener("keydown", function (e) {
+    window.addEventListener("keydown", function(e) {
         keys[e.keyCode] = true;
     });
-    window.addEventListener("keyup", function (e) {
+    window.addEventListener("keyup", function(e) {
         keys[e.keyCode] = false;
     });
 
     function clear(xPos, yPos) {
-        ctx.clearRect(xPos - _TANK_SIZE, yPos - _TANK_SIZE, xPos + _TANK_SIZE, yPos + _TANK_SIZE);
+        ctx.clearRect(xPos - _TANK_SIZE - 1, yPos - _TANK_SIZE - 1, _TANK_SIZE * 2 + 2, _TANK_SIZE * 2 + 2);
     }
 
     function drawTank(color, xPos, yPos) {
-        // Create gradient
-        var grd = ctx.createLinearGradient(0, 0, 200, 0);
-        grd.addColorStop(0, color);
-        grd.addColorStop(1, 'white');
-
         // Fill with gradient
         ctx.beginPath();
         ctx.arc(xPos, yPos, _TANK_SIZE, 0, 2 * Math.PI);
-        ctx.fillStyle = grd;
+        ctx.closePath();
+        ctx.fillStyle = color;
         ctx.fill();
     }
 
@@ -71,9 +60,12 @@ $(document).ready(function() {
         return false;
     });
 
-    socket.on('draw tank', function(data) {
-        // drawTank(data.color, data.xPos, data.yPos);
-        gameLoop();
+    var maxSpeed = 5,
+        velX = 0,
+        velY = 0,
+        friction = 0.98;
+    socket.on('draw tank', function(user) {
+        setInterval(gameLoop, 1000/60);
     });
 
     function gameLoop() {
@@ -81,28 +73,31 @@ $(document).ready(function() {
             newYPos = user.yPos,
             oldXPos = user.xPos,
             oldYPos = user.yPos;
-        // console.log(user);
-        if (keys[37] || keys[65]) {
-            newXPos -= 5;
+        if ((keys[37] || keys[65]) && velX > -maxSpeed) {
+            velX--;
         }
-        if (keys[38] || keys[87]) {
-            newYPos -= 5;
+        if ((keys[38] || keys[87]) && velY > -maxSpeed) {
+            velY--;
         }
-        if (keys[39] || keys[68]) {
-            newXPos += 5;
+        if ((keys[39] || keys[68]) && velX < maxSpeed) {
+            velX++;
         }
-        if (keys[40] || keys[83]) {
-            newYPos += 5;
+        if ((keys[40] || keys[83]) && velY < maxSpeed) {
+            velY++;
         }
-        // clear(user.xPos, user.yPos);
+        // apply some friction to x velocity.
+        velX *= friction;
+        newXPos += velX;
+        // apply some friction to y velocity.
+        velY *= friction;
+        newYPos += velY;
+
         user = new User(user.name, user.color, newXPos, newYPos);
-        // drawTank(user.color, user.xPos, user.yPos);
         socket.emit('reload map', {
             oldXPos: oldXPos,
             oldYPos: oldYPos,
             user: user,
         });
-        requestAnimationFrame(gameLoop);
     }
 
     socket.on('draw map', function(data) {
@@ -111,6 +106,7 @@ $(document).ready(function() {
     });
 
     socket.on('logout', function(data) {
+        console.log(data);
         clear(data.xPos, data.yPos);
     });
 
