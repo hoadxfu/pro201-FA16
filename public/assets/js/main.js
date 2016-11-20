@@ -1,11 +1,7 @@
-// $('form').submit(function() {
-//     socket.emit('chat message', $('#m').val());
-//     $('#m').val('');
-//     return false;
-// });
-// socket.on('chat message', function(msg){
-//     $('#messages').append($('<li>').text(msg));
-//  });
+(function() {
+    var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+    window.requestAnimationFrame = requestAnimationFrame;
+})();
 
 $(document).ready(function() {
     // define
@@ -27,8 +23,23 @@ $(document).ready(function() {
     var ctx = _gameArea.getContext('2d');
 
     var connected = false;
-    var username;
-    var usercolor;
+
+    function User(name, color, xPos, yPos) {
+        this.name = name;
+        this.color = color;
+        this.xPos = xPos;
+        this.yPos = yPos;
+    }
+    var user;
+    var keys = [];
+
+    // get key
+    window.addEventListener("keydown", function (e) {
+        keys[e.keyCode] = true;
+    });
+    window.addEventListener("keyup", function (e) {
+        keys[e.keyCode] = false;
+    });
 
     function clear(xPos, yPos) {
         ctx.clearRect(xPos - _TANK_SIZE, yPos - _TANK_SIZE, xPos + _TANK_SIZE, yPos + _TANK_SIZE);
@@ -52,45 +63,55 @@ $(document).ready(function() {
         usercolor = _COLORS[Math.floor((Math.random() * 11) + 0)];
         userXPos = Math.floor((Math.random() * _gameArea.width) + 1);
         userYPos = Math.floor((Math.random() * _gameArea.height) + 1);
-        // $(this).reset();
+        user = new User(username, usercolor, userXPos, userYPos);
+
         _loginPage.fadeOut();
         _gamePage.show();
-        socket.emit('add user', {
-            username: username,
-            usercolor: usercolor,
-            userXPos: userXPos,
-            userYPos: userYPos
-        });
+        socket.emit('add user', user);
         return false;
     });
 
     socket.on('draw tank', function(data) {
-        drawTank(data.usercolor, data.userXPos, data.userYPos);
+        // drawTank(data.color, data.xPos, data.yPos);
+        gameLoop();
     });
 
-//     $(document).bind('keydown', function(e) {
-//         if (e.keyCode == 37) {
-//             drawTank(usercolor, )
-//         }
-//         if (e.keyCode == 38) {
-//             box.animate({
-//                 top: "-=5000"
-//             }, 3000);
-//         }
-//         if (e.keyCode == 39) {
-//             box.animate({
-//                 left: "+=5000"
-//             }, 3000);
-//         }
-//         if (e.keyCode == 40) {
-//             box.animate({
-//                 top: "+=5000"
-//             }, 3000);
-//         }
-//     });
+    function gameLoop() {
+        var newXPos = user.xPos,
+            newYPos = user.yPos,
+            oldXPos = user.xPos,
+            oldYPos = user.yPos;
+        // console.log(user);
+        if (keys[37] || keys[65]) {
+            newXPos -= 5;
+        }
+        if (keys[38] || keys[87]) {
+            newYPos -= 5;
+        }
+        if (keys[39] || keys[68]) {
+            newXPos += 5;
+        }
+        if (keys[40] || keys[83]) {
+            newYPos += 5;
+        }
+        // clear(user.xPos, user.yPos);
+        user = new User(user.name, user.color, newXPos, newYPos);
+        // drawTank(user.color, user.xPos, user.yPos);
+        socket.emit('reload map', {
+            oldXPos: oldXPos,
+            oldYPos: oldYPos,
+            user: user,
+        });
+        requestAnimationFrame(gameLoop);
+    }
+
+    socket.on('draw map', function(data) {
+        clear(data.oldXPos, data.oldYPos);
+        drawTank(data.user.color, data.user.xPos, data.user.yPos);
+    });
 
     socket.on('logout', function(data) {
-        clear(data.userXPos, data.userYPos);
+        clear(data.xPos, data.yPos);
     });
 
 });

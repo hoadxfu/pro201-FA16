@@ -12,32 +12,28 @@ server.listen(port, function() {
 app.use(express.static(__dirname + '/public'));
 
 var numUsers = 0;
+var users = [];
 
 io.on('connection', function(socket) {
 
     // when the client emits 'add user', this listens and executes
-    socket.on('add user', function(data) {
+    socket.on('add user', function(user) {
         // we store the username in the socket session for this client
-        socket.username = data.username;
-        socket.usercolor = data.usercolor;
-        socket.userXPos = data.userXPos;
-        socket.userYPos = data.userYPos;
+        user.id = numUsers;
+        socket.user = user;
+        users.push(user);
         ++numUsers;
-        io.sockets.emit('draw tank', {
-            username: data.username,
-            usercolor: data.usercolor,
-            userXPos: data.userXPos,
-            userYPos: data.userYPos
-        });
+        io.sockets.emit('draw tank', user);
+    });
+
+    socket.on('reload map', function(data) {
+        users[users.indexOf(socket.user)] = data.user;
+        io.sockets.emit('draw map', data);
     });
 
     // when a user disconnect
     socket.on('disconnect', function () {
-        io.sockets.emit('logout', {
-            username: socket.username,
-            usercolor: socket.usercolor,
-            userXPos: socket.userXPos,
-            userYPos: socket.userYPos
-        });
+        users.splice(users.indexOf(socket.user), 1);
+        io.sockets.emit('logout', socket.user);
     });
 });
