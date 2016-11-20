@@ -60,7 +60,7 @@ $(document).ready(function() {
         return false;
     });
 
-    var maxSpeed = 5,
+    var maxSpeed = 2,
         velX = 0,
         velY = 0,
         friction = 0.98;
