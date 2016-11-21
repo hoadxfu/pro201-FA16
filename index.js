@@ -11,25 +11,25 @@ server.listen(port, function() {
 // Routingjs
 app.use(express.static(__dirname + '/public'));
 
-var numUsers = 0;
+var numTanks = 0;
 
 io.on('connection', function(socket) {
 
-    // when the client emits 'add user', this listens and executes
-    socket.on('add user', function(user) {
-        // we store the username in the socket session for this client
-        socket.user = user;
-        ++numUsers;
-        socket.emit('draw tank', user);
+    // when the client emits 'add tank', this listens and executes
+    socket.on('add tank', function(tank) {
+        // we store the tankname in the socket session for this client
+        socket.tank = tank;
+        ++numTanks;
+        socket.emit('draw tank', tank);
     });
 
     socket.on('reload map', function(data) {
-        socket.user = data.user;
+        socket.tank = data.tank;
         io.sockets.emit('draw map', data);
     });
 
-    // when a user disconnect
+    // when a tank disconnect
     socket.on('disconnect', function () {
-        io.sockets.emit('logout', socket.user);
+        io.sockets.emit('logout', socket.tank);
     });
 });

@@ -5,7 +5,6 @@ $(document).ready(function() {
         '#58dc00', '#287b00', '#a8f07a', '#4ae8c4',
         '#3b88eb', '#3824aa', '#a700ff', '#d300e7'
     ];
-    var _TANK_SIZE = 15;
 
     // socket
     var socket = io();
@@ -16,73 +15,142 @@ $(document).ready(function() {
     _gameArea.width = $(window).width();
     _gameArea.height = 630;
     var ctx = _gameArea.getContext('2d');
+    var lastShootTime = 0;
 
-    function User(name, color, xPos, yPos) {
+    // Object Bullet
+    function Bullet(xPos, yPos, angle) {
+        this.xPos = xPos;
+        this.yPos = yPos;
+        this.angle = angle;
+        this.size = 6;
+        this.speed = 4;
+        this.active = true;
+    }
+    Bullet.prototype.inBound = function() {
+        return this.xPos - this.size >= 0 && this.yPos - this.size >= 0 && this.xPos + this.size <= _gameArea.width && this.yPos + this.size <= _gameArea.width;
+    }
+    Bullet.prototype.update = function() {
+        this.xPos += this.speed * Math.cos(this.angle);
+        this.yPos += this.speed * Math.sin(this.angle);
+        this.active = this.active && this.inBound();
+    }
+    Bullet.prototype.draw = function() {
+        ctx.beginPath();
+        ctx.arc(this.xPos, this.yPos, this.size, 0, 2 * Math.PI);
+        ctx.closePath();
+        ctx.fillStyle = 'red';
+        ctx.fill();
+    }
+    Bullet.prototype.clear = function() {
+        ctx.clearRect(this.xPos - this.size - 5, this.yPos - this.size - 5, this.size * 2 + 10, this.size* 2 + 10);
+    }
+
+    // Object Tank
+    function Tank(name, color, xPos, yPos, angle) {
         this.name = name;
         this.color = color;
         this.xPos = xPos;
         this.yPos = yPos;
+        this.angle = angle;
+        this.size = 20;
+        this.bulletSize = 6;
+        this.speed = 2;
+        this.lastShootTime = 0;  // time when we last shoot
+        this.shootRate = 300;    // time between two bullets. (in ms)
     }
-    var user;
-    var keys = [];
+    Tank.prototype.inBound = function() {
+        return this.xPos - this.size >= 0 && this.yPos - this.size >= 0 && this.xPos + this.size <= _gameArea.width && this.yPos + this.size <= _gameArea.width;
+    }
+    Tank.prototype.clear = function() {
+        ctx.save();
+        ctx.translate(this.xPos, this.yPos);
+        ctx.rotate(this.angle);
+        ctx.clearRect(- this.size - 1, - this.size - 1, this.size * 3 + 2, this.size * 2 + 2);
+        ctx.restore();
+    }
+    Tank.prototype.draw = function() {
+        ctx.save();
+        ctx.beginPath();
+        ctx.translate(this.xPos, this.yPos);
+        if (this.angle !== 0) ctx.rotate(this.angle);
+        ctx.arc(0, 0, this.size, 0, 2 * Math.PI);
+        ctx.closePath();
+        ctx.rect(0, 0 - this.size / 2, this.size * 2, this.size);
+        var grd = ctx.createLinearGradient(0, 0, 170, 0);
+        grd.addColorStop(0, this.color);
+        grd.addColorStop(1, '#fff');
+        ctx.fillStyle = grd;
+        ctx.fill();
+        ctx.restore();
+    }
+    Tank.prototype.shooting = function() {
+        var now = (new Date()).getTime();
+        if (now - lastShootTime < this.shootRate) return;
+        lastShootTime = now;
+        bullets.push(new Bullet(
+            this.xPos + (this.size * 2 + 8) * Math.cos(this.angle),
+            this.yPos + (this.size * 2 + 8) * Math.sin(this.angle),
+            this.angle
+        ));
+    }
 
+    var tank;
+    var bullets = [];
+    var keys = [];
+    var pageX, pageY;
+    var mouseHold = false;
     // get key
-    window.addEventListener("keydown", function(e) {
+    window.addEventListener('keydown', function(e) {
         keys[e.keyCode] = true;
     });
-    window.addEventListener("keyup", function(e) {
+    window.addEventListener('keyup', function(e) {
         keys[e.keyCode] = false;
     });
-
-    function clear(xPos, yPos) {
-        ctx.clearRect(xPos - _TANK_SIZE - 1, yPos - _TANK_SIZE - 1, _TANK_SIZE * 2 + 2, _TANK_SIZE * 2 + 2);
-    }
-
-    function drawTank(color, xPos, yPos) {
-        // Fill with gradient
-        ctx.beginPath();
-        ctx.arc(xPos, yPos, _TANK_SIZE, 0, 2 * Math.PI);
-        ctx.closePath();
-        ctx.fillStyle = color;
-        ctx.fill();
-    }
+    window.addEventListener('mousemove', function(e) {
+        pageX = e.clientX;
+        pageY = e.clientY;
+    });
+    window.addEventListener('mousedown', function(e) {
+        mouseHold = true;
+    });
+    window.addEventListener('mouseup', function(e) {
+        mouseHold = false;
+    });
 
     $('#login-form').submit(function() {
-        username = $('#login-form input[name="username"]').val().trim();
-        usercolor = _COLORS[Math.floor((Math.random() * 11) + 0)];
-        userXPos = Math.floor((Math.random() * _gameArea.width) + 1);
-        userYPos = Math.floor((Math.random() * _gameArea.height) + 1);
-        user = new User(username, usercolor, userXPos, userYPos);
+        tankname = $('#login-form input[name="tankname"]').val().trim();
+        tankcolor = _COLORS[Math.floor((Math.random() * 11) + 0)];
+        tankXPos = Math.floor((Math.random() * _gameArea.width) + 1);
+        tankYPos = Math.floor((Math.random() * _gameArea.height) + 1);
+        tank = new Tank(tankname, tankcolor, tankXPos, tankYPos, 0);
 
         _loginPage.fadeOut();
         _gamePage.show();
-        socket.emit('add user', user);
+        socket.emit('add tank', tank);
         return false;
     });
 
-    var maxSpeed = 2,
-        velX = 0,
+    var velX = 0,
         velY = 0,
         friction = 0.98;
-    socket.on('draw tank', function(user) {
-        setInterval(gameLoop, 1000/60);
+    socket.on('draw tank', function(tank) {
+        requestAnimationFrame(gameLoop);
     });
 
     function gameLoop() {
-        var newXPos = user.xPos,
-            newYPos = user.yPos,
-            oldXPos = user.xPos,
-            oldYPos = user.yPos;
-        if ((keys[37] || keys[65]) && velX > -maxSpeed) {
+        var newXPos = tank.xPos,
+            newYPos = tank.yPos,
+            oldTank = tank;
+        if ((keys[37] || keys[65]) && velX > -tank.speed) {
             velX--;
         }
-        if ((keys[38] || keys[87]) && velY > -maxSpeed) {
+        if ((keys[38] || keys[87]) && velY > -tank.speed) {
             velY--;
         }
-        if ((keys[39] || keys[68]) && velX < maxSpeed) {
+        if ((keys[39] || keys[68]) && velX < tank.speed) {
             velX++;
         }
-        if ((keys[40] || keys[83]) && velY < maxSpeed) {
+        if ((keys[40] || keys[83]) && velY < tank.speed) {
             velY++;
         }
         // apply some friction to x velocity.
@@ -92,22 +160,40 @@ $(document).ready(function() {
         velY *= friction;
         newYPos += velY;
 
-        user = new User(user.name, user.color, newXPos, newYPos);
-        socket.emit('reload map', {
-            oldXPos: oldXPos,
-            oldYPos: oldYPos,
-            user: user,
+        var newAngle = Math.atan2(pageY - newYPos, pageX - newXPos);
+        tank = new Tank(tank.name, tank.color, newXPos, newYPos, newAngle);
+
+        if (mouseHold) {
+            tank.shooting();
+        }
+        bullets.forEach(function(bullet, key) {
+            bullet.update();
         });
+        bullets = bullets.filter(function(bullet) {
+            return bullet.active;
+        });
+
+        socket.emit('reload map', {
+            oldTank: oldTank,
+            tank: tank,
+            bullets: bullets,
+        });
+        requestAnimationFrame(gameLoop);
     }
 
     socket.on('draw map', function(data) {
-        clear(data.oldXPos, data.oldYPos);
-        drawTank(data.user.color, data.user.xPos, data.user.yPos);
+        (new Tank(data.oldTank.name, data.oldTank.color, data.oldTank.xPos, data.oldTank.yPos, data.oldTank.angle)).clear();
+        (new Tank(data.tank.name, data.tank.color, data.tank.xPos, data.tank.yPos, data.tank.angle)).draw();
+        data.bullets.forEach(function(item, key) {
+            var bullet = new Bullet(item.xPos, item.yPos, item.angle);
+            bullet.clear();
+            bullet.draw();
+            if (!bullet.active) bullet.clear();
+        });
     });
 
     socket.on('logout', function(data) {
-        console.log(data);
-        clear(data.xPos, data.yPos);
+        (new Tank(data.name, data.color, data.xPos, data.yPos, data.angle)).clear();
     });
 
 });
