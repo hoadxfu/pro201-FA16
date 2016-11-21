@@ -169,14 +169,14 @@ $(document).ready(function() {
         bullets.forEach(function(bullet, key) {
             bullet.update();
         });
-        bullets = bullets.filter(function(bullet) {
-            return bullet.active;
-        });
 
         socket.emit('reload map', {
             oldTank: oldTank,
             tank: tank,
             bullets: bullets,
+        });
+        bullets = bullets.filter(function(bullet) {
+            return bullet.active;
         });
         requestAnimationFrame(gameLoop);
     }
@@ -188,7 +188,7 @@ $(document).ready(function() {
             var bullet = new Bullet(item.xPos, item.yPos, item.angle);
             bullet.clear();
             bullet.draw();
-            if (!bullet.active) bullet.clear();
+            if (!item.active) bullet.clear();
         });
     });
 
