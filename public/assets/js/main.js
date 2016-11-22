@@ -7,13 +7,7 @@ $(document).ready(function() {
     ];
 
     // socket
-    var host = window.document.location.host.replace(/:.*/, '');
-    var ws = new WebSocket('ws://' + host + ':8080');
-    var json = JSON.stringify({ message: 'Hello' });
-    ws.send(json);
-    ws.onmessage = function(event) {
-        console.log(event.data);
-    }
+    var socket = io();
     // pages
     var _loginPage = $('.login'),
         _gamePage = $('.game').hide();
@@ -132,16 +126,16 @@ $(document).ready(function() {
 
         _loginPage.fadeOut();
         _gamePage.show();
-        // socket.emit('add tank', tank);
+        socket.emit('add tank', tank);
         return false;
     });
 
     var velX = 0,
         velY = 0,
         friction = 0.98;
-    // socket.on('draw tank', function(tank) {
-    //     requestAnimationFrame(gameLoop);
-    // });
+    socket.on('draw tank', function(tank) {
+        requestAnimationFrame(gameLoop);
+    });
 
     function gameLoop() {
         var newXPos = tank.xPos,
@@ -176,30 +170,30 @@ $(document).ready(function() {
             bullet.update();
         });
 
-        // socket.emit('reload map', {
-        //     oldTank: oldTank,
-        //     tank: tank,
-        //     bullets: bullets,
-        // });
+        socket.emit('reload map', {
+            oldTank: oldTank,
+            tank: tank,
+            bullets: bullets,
+        });
         bullets = bullets.filter(function(bullet) {
             return bullet.active;
         });
         requestAnimationFrame(gameLoop);
     }
 
-    // socket.on('draw map', function(data) {
-    //     (new Tank(data.oldTank.name, data.oldTank.color, data.oldTank.xPos, data.oldTank.yPos, data.oldTank.angle)).clear();
-    //     (new Tank(data.tank.name, data.tank.color, data.tank.xPos, data.tank.yPos, data.tank.angle)).draw();
-    //     data.bullets.forEach(function(item, key) {
-    //         var bullet = new Bullet(item.xPos, item.yPos, item.angle);
-    //         bullet.clear();
-    //         bullet.draw();
-    //         if (!item.active) bullet.clear();
-    //     });
-    // });
-    //
-    // socket.on('logout', function(data) {
-    //     (new Tank(data.name, data.color, data.xPos, data.yPos, data.angle)).clear();
-    // });
+    socket.on('draw map', function(data) {
+        (new Tank(data.oldTank.name, data.oldTank.color, data.oldTank.xPos, data.oldTank.yPos, data.oldTank.angle)).clear();
+        (new Tank(data.tank.name, data.tank.color, data.tank.xPos, data.tank.yPos, data.tank.angle)).draw();
+        data.bullets.forEach(function(item, key) {
+            var bullet = new Bullet(item.xPos, item.yPos, item.angle);
+            bullet.clear();
+            bullet.draw();
+            if (!item.active) bullet.clear();
+        });
+    });
+
+    socket.on('logout', function(data) {
+        (new Tank(data.name, data.color, data.xPos, data.yPos, data.angle)).clear();
+    });
 
 });

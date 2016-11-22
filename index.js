@@ -1,55 +1,35 @@
-var server = require('http').createServer(),
-    url = require('url'),
-    WebSocketServer = require('ws').Server,
-    wss = new WebSocketServer({
-        server: server
-    }),
-    express = require('express'),
-    app = express(),
-    port = 8080,
-    path = require('path');
+var express = require('express');
+var app = express();
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
+var port = process.env.PORT || 3000;
 
-app.use(express.static(path.join(__dirname, '/public')));
+server.listen(port, function() {
+    console.log('Server listening at port %d', port);
+});
 
-wss.broadcast = function(data) {
-    for (var i in this.clients)
-        this.clients[i].send(data);
-};
+// Routingjs
+app.use(express.static(__dirname + '/public'));
 
-wss.on('connection', function connection(ws) {
-    var location = url.parse(ws.upgradeReq.url, true);
-    // you might use location.query.access_token to authenticate or share sessions
-    // or ws.upgradeReq.headers.cookie (see http://stackoverflow.com/a/16395220/151312)
+var numTanks = 0;
 
-    ws.on('message', function(data) {
-        console.log(data);
-        wss.broadcast(JSON.stringify({ message: 'Gotcha' }));
+io.on('connection', function(socket) {
+
+    // when the client emits 'add tank', this listens and executes
+    socket.on('add tank', function(tank) {
+        // we store the tankname in the socket session for this client
+        socket.tank = tank;
+        ++numTanks;
+        socket.emit('draw tank', tank);
     });
 
-});
+    socket.on('reload map', function(data) {
+        socket.tank = data.tank;
+        io.sockets.emit('draw map', data);
+    });
 
-server.on('request', app);
-server.listen(port, function() {
-    console.log('Listening on ' + server.address().port)
+    // when a tank disconnect
+    socket.on('disconnect', function () {
+        io.sockets.emit('logout', socket.tank);
+    });
 });
-
-// io.on('connection', function(socket) {
-//
-//     // when the client emits 'add tank', this listens and executes
-//     socket.on('add tank', function(tank) {
-//         // we store the tankname in the socket session for this client
-//         socket.tank = tank;
-//         ++numTanks;
-//         socket.emit('draw tank', tank);
-//     });
-//
-//     socket.on('reload map', function(data) {
-//         socket.tank = data.tank;
-//         io.sockets.emit('draw map', data);
-//     });
-//
-//     // when a tank disconnect
-//     socket.on('disconnect', function () {
-//         io.sockets.emit('logout', socket.tank);
-//     });
-// });
