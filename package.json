@@ -1,13 +1,14 @@
 {
-  "name": "pro201-last-project",
-  "version": "0.0.1",
-  "main": "index.js",
-  "description": "pro201 last project",
-  "dependencies": {
-    "express": "^4.10.2",
-    "socket.io": "^1.5.1"
-  },
-  "scripts": {
-    "start": "node index.js"
-  }
+    "name": "pro201-last-project",
+    "version": "0.0.1",
+    "main": "index.js",
+    "description": "pro201 last project",
+    "dependencies": {
+        "express": "^4.10.2",
+        "msgpack-lite": "^0.1.26",
+        "socket.io": "^1.5.1"
+    },
+    "scripts": {
+        "start": "node index.js"
+    }
 }

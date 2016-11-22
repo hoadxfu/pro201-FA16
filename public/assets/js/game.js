@@ -93,17 +93,18 @@ $(document).ready(function() {
             bullet.update();
         });
 
-        socket.emit('reload map', {
+        socket.emit('reload map', JSON.stringify({
             oldTank: oldTank,
             tank: tank,
             bullets: bullets,
-        });
+        }));
         bullets = bullets.filter(function(bullet) {
             return bullet.active;
         });
     }
 
     socket.on('draw map', function(data) {
+        data = JSON.parse(data);
         (new Tank(data.oldTank.name, data.oldTank.color, data.oldTank.xPos, data.oldTank.yPos, data.oldTank.angle)).clear();
         (new Tank(data.tank.name, data.tank.color, data.tank.xPos, data.tank.yPos, data.tank.angle)).draw();
         data.bullets.forEach(function(item, key) {

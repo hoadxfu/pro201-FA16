@@ -24,8 +24,9 @@ io.on('connection', function(socket) {
     });
 
     socket.on('reload map', function(data) {
+        data = JSON.parse(data);
         socket.tank = data.tank;
-        io.sockets.emit('draw map', data);
+        io.sockets.emit('draw map', JSON.stringify(data));
     });
 
     // when a tank disconnect
