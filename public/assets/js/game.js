@@ -57,7 +57,7 @@ $(document).ready(function() {
         velY = 0,
         friction = 0.98;
     socket.on('draw tank', function(tank) {
-        setInterval(gameLoop, 1000/60);
+        setInterval(gameLoop, 1000/30);
     });
 
     function gameLoop() {
