@@ -57,7 +57,7 @@ $(document).ready(function() {
         velY = 0,
         friction = 0.98;
     socket.on('draw tank', function(tank) {
-        setInterval(gameLoop, 1000/30);
+        setInterval(gameLoop, 1000/60);
     });
 
     function gameLoop() {
@@ -85,12 +85,17 @@ $(document).ready(function() {
 
         var newAngle = Math.atan2(pageY - newYPos, pageX - newXPos);
         tank = new Tank(tank.name, tank.color, newXPos, newYPos, newAngle);
+        oldTank.clear();
+        tank.draw();
 
         if (mouseHold) {
             tank.shooting(bullets);
         }
         bullets.forEach(function(bullet, key) {
+            bullet.clear();
             bullet.update();
+            bullet.draw();
+            if (!bullet.active) bullet.clear();
         });
 
         socket.emit('reload map', JSON.stringify({
