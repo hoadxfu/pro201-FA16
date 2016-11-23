@@ -26,11 +26,11 @@ io.on('connection', function(socket) {
     socket.on('reload map', function(data) {
         data = JSON.parse(data);
         socket.tank = data.tank;
-        socket.broadcast.emit('draw map', JSON.stringify(data));
+        io.sockets.emit('draw map', JSON.stringify(data));
     });
 
     // when a tank disconnect
     socket.on('disconnect', function () {
-        socket.broadcast.emit('logout', socket.tank);
+        io.sockets.emit('logout', socket.tank);
     });
 });
