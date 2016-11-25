@@ -14,7 +14,7 @@ server.listen(port, function() {
 // Routingjs
 app.use(express.static(__dirname + '/public'));
 
-var SOCKET_LIST = {};
+var TANK_LIST = {};
 
 io.on('connection', function(socket) {
 
@@ -25,13 +25,13 @@ io.on('connection', function(socket) {
         socket.x = data.xPos;
         socket.y = data.yPos;
         socket.angle = data.angle;
-        SOCKET_LIST[socket.id] = socket;
+        TANK_LIST[socket.id] = socket;
 
         Tank.onConnect(socket);
     });
 
     socket.on('disconnect', function() {
-        delete SOCKET_LIST[socket.id];
+        delete TANK_LIST[socket.id];
         Tank.onDisconnect(socket);
     });
 
@@ -43,8 +43,8 @@ setInterval(function() {
         bullet: Bullet.update(),
     }
 
-    for (var i in SOCKET_LIST) {
-        var socket = SOCKET_LIST[i];
+    for (var i in TANK_LIST) {
+        var socket = TANK_LIST[i];
         socket.emit('newPositions', pack);
     }
-}, 1000 / 60);
+}, 1000 / 30);

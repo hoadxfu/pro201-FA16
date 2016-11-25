@@ -4,6 +4,8 @@ html, body {
     margin: 0;
     padding: 0;
     font-size: 14px;
+    background-color: #2C3E50;
+    overflow-x: hidden;
 }
 
 /*Login Form*/
@@ -32,9 +34,9 @@ html, body {
 
 /*Game page*/
 .game {
-    background-color: #2C3E50;
     color: #fff;
     height: 100%;
+    overflow-x: hidden;
 }
 .game ul {
     margin: 0;
@@ -63,5 +65,8 @@ html, body {
     font-size: 18px;
 }
 .game canvas {
-    
+    border: 1px solid #ddd;
+    display: block;
+    margin: 0 auto;
+    margin-top: 55px;
 }

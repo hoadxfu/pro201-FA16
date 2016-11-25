@@ -12,15 +12,15 @@ var Tank = function(id, name, color, x, y, angle) {
     self.pressingDown = false;
     self.pressingAttack = false;
     self.mouseAngle = 0;
-    self.maxSpd = 3;
-    self.size = 20;
+    self.maxSpd = 6;
+    self.size = 15;
     self.lastShootTime = 0;
     self.shootRate = 300;
 
     var super_update = self.update;
     self.update = function() {
-        self.updateSpd();
         self.angle = self.mouseAngle;
+        self.updateSpd();
         super_update();
 
         if (self.pressingAttack) {
