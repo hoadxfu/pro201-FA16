@@ -3,6 +3,9 @@ var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var port = process.env.PORT || 3000;
+const uuid = require('uuid');
+var Tank = require('./game_modules/Tank.js');
+var Bullet = require('./game_modules/Bullet.js');
 
 server.listen(port, function() {
     console.log('Server listening at port %d', port);
@@ -11,26 +14,37 @@ server.listen(port, function() {
 // Routingjs
 app.use(express.static(__dirname + '/public'));
 
-var numTanks = 0;
+var SOCKET_LIST = {};
 
 io.on('connection', function(socket) {
 
-    // when the client emits 'add tank', this listens and executes
-    socket.on('add tank', function(tank) {
-        // we store the tankname in the socket session for this client
-        socket.tank = tank;
-        ++numTanks;
-        socket.emit('draw tank', tank);
+    socket.on('add tank', function(data) {
+        socket.id = uuid();
+        socket.name = data.name;
+        socket.color = data.color;
+        socket.x = data.xPos;
+        socket.y = data.yPos;
+        socket.angle = data.angle;
+        SOCKET_LIST[socket.id] = socket;
+
+        Tank.onConnect(socket);
     });
 
-    socket.on('reload map', function(data) {
-        data = JSON.parse(data);
-        socket.tank = data.tank;
-        io.sockets.emit('draw map', JSON.stringify(data));
+    socket.on('disconnect', function() {
+        delete SOCKET_LIST[socket.id];
+        Tank.onDisconnect(socket);
     });
 
-    // when a tank disconnect
-    socket.on('disconnect', function () {
-        io.sockets.emit('logout', socket.tank);
-    });
 });
+
+setInterval(function() {
+    var pack = {
+        tank: Tank.update(),
+        bullet: Bullet.update(),
+    }
+
+    for (var i in SOCKET_LIST) {
+        var socket = SOCKET_LIST[i];
+        socket.emit('newPositions', pack);
+    }
+}, 1000 / 60);
