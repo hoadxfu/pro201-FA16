@@ -17,26 +17,54 @@ var ctx = _gameArea.getContext('2d');
 
 $(document).ready(function() {
 
-    // Push map
-    var maps = [];
-    maps.push(new Wall(80, 0, 80, 90));
-    maps.push(new Wall(520, 400, 520, 310));
-    maps.push(new Wall(160, 90, 520, 90));
-    maps.push(new Wall(240, 90, 240, 160));
-    maps.push(new Wall(240, 160, 300, 160));
-    maps.push(new Wall(0, 160, 80, 160));
-    maps.push(new Wall(80, 160, 80, 230));
-    maps.push(new Wall(80, 230, 160, 230));
-    maps.push(new Wall(240, 160, 160, 160));
-    maps.push(new Wall(80, 310, 160, 310));
-    maps.push(new Wall(80, 310, 80, 400));
-    maps.push(new Wall(380, 90, 380, 230));
-    maps.push(new Wall(240, 310, 440, 310));
-    maps.push(new Wall(380, 230, 240, 230));
-    maps.push(new Wall(440, 310, 440, 400));
-    maps.push(new Wall(600, 230, 450, 230));
-    maps.push(new Wall(450, 160, 530, 160));
-    maps.push(new Wall(530, 160, 530, 230));
+  // Push map
+  var maps = [];
+  var height_cell = _gameArea.height/7;
+  var width_cell = _gameArea.width/14;
+  // maps.push(new Wall(width_cell, height_cell, width_cell, height_cell));
+  maps.push(new Wall(width_cell, 0, width_cell, height_cell));
+  maps.push(new Wall(2*width_cell, height_cell, 7*width_cell, height_cell));
+  maps.push(new Wall(8*width_cell, 0, 8*width_cell, 2*height_cell));
+  maps.push(new Wall(9*width_cell, height_cell, 10*width_cell, height_cell));
+  maps.push(new Wall(9*width_cell, height_cell, 9*width_cell, 2*height_cell));
+  maps.push(new Wall(11*width_cell, 0, 11*width_cell, 2*height_cell));
+  maps.push(new Wall(11*width_cell, height_cell, 12*width_cell, height_cell));
+  maps.push(new Wall(13*width_cell, height_cell, 14*width_cell, height_cell));
+  maps.push(new Wall(0, 2*height_cell, width_cell, 2*height_cell));
+  maps.push(new Wall(width_cell, 2*height_cell, width_cell, 3*height_cell));
+  maps.push(new Wall(width_cell, 3*height_cell, 2*width_cell, 3*height_cell));
+  maps.push(new Wall(width_cell, 4*height_cell, width_cell, 7*height_cell));
+  maps.push(new Wall(width_cell, 4*height_cell, 2*width_cell, 4*height_cell));
+  maps.push(new Wall(width_cell, 5*height_cell, 3*width_cell, 5*height_cell));
+  maps.push(new Wall(2*width_cell, 6*height_cell, 4*width_cell, 6*height_cell));
+  maps.push(new Wall(4*width_cell, 4*height_cell, 4*width_cell, 6*height_cell));
+  maps.push(new Wall(3*width_cell, 4*height_cell, 6*width_cell, 4*height_cell));
+  maps.push(new Wall(6*width_cell, 4*height_cell, 6*width_cell, 5*height_cell));
+  maps.push(new Wall(5*width_cell, 5*height_cell, 5*width_cell, 6*height_cell));
+  maps.push(new Wall(5*width_cell, 6*height_cell, 8*width_cell, 6*height_cell));
+  maps.push(new Wall(7*width_cell, 4*height_cell, 7*width_cell, 5*height_cell));
+  maps.push(new Wall(7*width_cell, 4*height_cell, 8*width_cell, 4*height_cell));
+  maps.push(new Wall(8*width_cell, 4*height_cell, 8*width_cell, 7*height_cell));
+  maps.push(new Wall(8*width_cell, 5*height_cell, 9*width_cell, 5*height_cell));
+  maps.push(new Wall(9*width_cell, 5*height_cell, 9*width_cell, 6*height_cell));
+  maps.push(new Wall(10*width_cell, 5*height_cell, 10*width_cell, 7*height_cell));
+  maps.push(new Wall(11*width_cell, 5*height_cell, 11*width_cell, 7*height_cell));
+  maps.push(new Wall(12*width_cell, 4*height_cell, 12*width_cell, 6*height_cell));
+  maps.push(new Wall(12*width_cell, 4*height_cell, 13*width_cell, 4*height_cell));
+  maps.push(new Wall(13*width_cell, 4*height_cell, 13*width_cell, 7*height_cell));
+  maps.push(new Wall(2*width_cell, 2*height_cell, 4*width_cell, 2*height_cell));
+  maps.push(new Wall(3*width_cell, height_cell, 3*width_cell, 2*height_cell));
+  maps.push(new Wall(3*width_cell, 3*height_cell, 5*width_cell, 3*height_cell));
+  maps.push(new Wall(5*width_cell, 3*height_cell, 5*width_cell, height_cell));
+  maps.push(new Wall(6*width_cell, 2*height_cell, 7*width_cell, 2*height_cell));
+  maps.push(new Wall(7*width_cell, 2*height_cell, 7*width_cell, 3*height_cell));
+  maps.push(new Wall(6*width_cell, 3*height_cell, 11*width_cell, 3*height_cell));
+  maps.push(new Wall(9*width_cell, 3*height_cell, 9*width_cell, 4*height_cell));
+  maps.push(new Wall(9*width_cell, 4*height_cell, 10*width_cell, 4*height_cell));
+  maps.push(new Wall(11*width_cell, 3*height_cell, 11*width_cell, 4*height_cell));
+  maps.push(new Wall(10*width_cell, 2*height_cell, 12*width_cell, 2*height_cell));
+  maps.push(new Wall(12*width_cell, 3*height_cell, 13*width_cell, 3*height_cell));
+  maps.push(new Wall(13*width_cell, 3*height_cell, 13*width_cell, 2*height_cell));
 
     $('#login-form').submit(function() {
         tankname = $('#login-form input[name="tankname"]').val().trim();
