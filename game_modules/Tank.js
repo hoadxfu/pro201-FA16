@@ -15,6 +15,7 @@ var Bounds = [];
 function setBound() {
   var height_cell = _gameAreaheight/7;
   var width_cell = _gameAreawidth/14;
+  // Bounds.push(new gameBound(width_cell, height_cell, 4*width_cell, height_cell));
   // 4 duong bao quanh map
   Bounds.push(new gameBound(0, 0, _gameAreawidth, 0));
   Bounds.push(new gameBound(0, 0, 0, _gameAreaheight));

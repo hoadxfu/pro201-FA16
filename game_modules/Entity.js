@@ -54,13 +54,25 @@ var Entity = function(x, y, angle) {
     //     var xMax = Math.max(x1, x2) + size;
     //     var yMin = Math.min(y1, y2) - size;
     //     var yMax = Math.max(y1, y2) + size;
-    // var newXPos = self.x + self.spdX;
-    // var newYPos = self.y + self.spdY;
+    //     var newXPos = self.x + self.spdX;
+    //     var newYPos = self.y + self.spdY;
     //     var distance = ((y2 - y1) * (newXPos - x1) - (x2 - x1) * (newYPos - y1)) / (Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1)));
     //     if (Math.abs(distance) <= size && (newXPos >= xMin && newXPos < xMax) && (newYPos >= yMin && newYPos < yMax)) {
-    //         return false;
+    //         if (Math.sign(distance) < 0) {
+    //             if (self.x < x1 && self.x < x2) {
+    //               return 1 //left
+    //             } else {
+    //               return 3; //under
+    //             }
+    //         } else {
+    //             if (self.x > x1 && self.x > x2){
+    //               return 2;//right
+    //             } else {
+    //               return 4;//on
+    //             }
+    //         }
     //     }
-    //     return true;
+    //     return 0;
     // }
 
     return self;
