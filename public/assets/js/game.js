@@ -11,7 +11,7 @@ var socket = io();
 var _loginPage = $('.login'),
     _gamePage = $('.game').hide();
 var _gameArea = document.getElementById('game-area');
-_gameArea.width = $(window).width() - 200;
+_gameArea.width = 1366 - 200;
 _gameArea.height = 550;
 var ctx = _gameArea.getContext('2d');
 
