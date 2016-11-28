@@ -1,75 +1,10 @@
 var Entity = require('./Entity.js');
 var Bullet = require('./Bullet.js');
-
-// Set gameBound
-var _gameAreawidth = 1366 - 200;
-var _gameAreaheight = 550;
-
-function gameBound(x1, y1, x2, y2) {
-    this.x1 = x1;
-    this.y1 = y1;
-    this.x2 = x2;
-    this.y2 = y2;
-}
-var Bounds = [];
-
-function setBound() {
-    var wallwidth = 3;
-    var height_cell = _gameAreaheight / 7;
-    var width_cell = _gameAreawidth / 14;
-    // 4 duong bao quanh map
-    Bounds.push(new gameBound(0, 0, _gameAreawidth, 0));
-    Bounds.push(new gameBound(0, 0, 0, _gameAreaheight));
-    Bounds.push(new gameBound(0, _gameAreaheight, _gameAreawidth, _gameAreaheight));
-    Bounds.push(new gameBound(_gameAreawidth, _gameAreaheight, _gameAreawidth, 0));
-    // end
-    // tuong ben trong Map
-    Bounds.push(new gameBound(width_cell, 0, width_cell, height_cell));
-    Bounds.push(new gameBound(2 * width_cell, height_cell, 7 * width_cell, height_cell));
-    Bounds.push(new gameBound(8 * width_cell, 0, 8 * width_cell, 2 * height_cell));
-    Bounds.push(new gameBound(9 * width_cell + wallwidth, height_cell, 10 * width_cell, height_cell)); ///
-    Bounds.push(new gameBound(9 * width_cell, height_cell + wallwidth, 9 * width_cell, 2 * height_cell));///
-    Bounds.push(new gameBound(11 * width_cell, 0, 11 * width_cell, 2 * height_cell - wallwidth)); ///
-    Bounds.push(new gameBound(11 * width_cell + wallwidth, height_cell, 12 * width_cell, height_cell));///
-    Bounds.push(new gameBound(13 * width_cell, height_cell, 14 * width_cell, height_cell));
-    Bounds.push(new gameBound(0, 2 * height_cell, width_cell - wallwidth, 2 * height_cell)); ///
-    Bounds.push(new gameBound(width_cell, 2 * height_cell + wallwidth, width_cell, 3 * height_cell - wallwidth));///
-    Bounds.push(new gameBound(width_cell + wallwidth, 3 * height_cell, 2 * width_cell, 3 * height_cell));///
-    Bounds.push(new gameBound(width_cell, 4 * height_cell + wallwidth, width_cell, 7 * height_cell));///
-    Bounds.push(new gameBound(width_cell + wallwidth, 4 * height_cell, 2 * width_cell, 4 * height_cell)); ///
-    Bounds.push(new gameBound(width_cell + wallwidth, 5 * height_cell, 3 * width_cell, 5 * height_cell)); ///
-    Bounds.push(new gameBound(2 * width_cell, 6 * height_cell, 4 * width_cell - wallwidth, 6 * height_cell)); ///
-    Bounds.push(new gameBound(4 * width_cell, 4 * height_cell + wallwidth, 4 * width_cell, 6 * height_cell - wallwidth)); ///
-    Bounds.push(new gameBound(3 * width_cell, 4 * height_cell, 6 * width_cell - wallwidth, 4 * height_cell));///
-    Bounds.push(new gameBound(6 * width_cell, 4 * height_cell + wallwidth, 6 * width_cell, 5 * height_cell)); ///
-    Bounds.push(new gameBound(5 * width_cell, 5 * height_cell, 5 * width_cell, 6 * height_cell - wallwidth)); ///
-    Bounds.push(new gameBound(5 * width_cell + wallwidth, 6 * height_cell, 8 * width_cell - wallwidth, 6 * height_cell)); ///
-    Bounds.push(new gameBound(7 * width_cell, 4 * height_cell + wallwidth, 7 * width_cell, 5 * height_cell));///
-    Bounds.push(new gameBound(7 * width_cell + wallwidth, 4 * height_cell, 8 * width_cell - wallwidth, 4 * height_cell)); ///
-    Bounds.push(new gameBound(8 * width_cell, 4 * height_cell + wallwidth, 8 * width_cell, 7 * height_cell)); ///
-    Bounds.push(new gameBound(8 * width_cell + wallwidth, 5 * height_cell, 9 * width_cell - wallwidth, 5 * height_cell)); ///
-    Bounds.push(new gameBound(9 * width_cell, 5 * height_cell + wallwidth, 9 * width_cell, 6 * height_cell)); ///
-    Bounds.push(new gameBound(10 * width_cell, 5 * height_cell, 10 * width_cell, 7 * height_cell));
-    Bounds.push(new gameBound(11 * width_cell, 5 * height_cell, 11 * width_cell, 7 * height_cell));
-    Bounds.push(new gameBound(12 * width_cell, 4 * height_cell + wallwidth, 12 * width_cell, 6 * height_cell)); ////
-    Bounds.push(new gameBound(12 * width_cell + wallwidth, 4 * height_cell, 13 * width_cell - wallwidth, 4 * height_cell)); ///
-    Bounds.push(new gameBound(13 * width_cell, 4 * height_cell + wallwidth, 13 * width_cell, 7 * height_cell)); ////
-    Bounds.push(new gameBound(2 * width_cell, 2 * height_cell, 4 * width_cell, 2 * height_cell));
-    Bounds.push(new gameBound(3 * width_cell, height_cell + wallwidth, 3 * width_cell, 2 * height_cell - wallwidth)); ///
-    Bounds.push(new gameBound(3 * width_cell, 3 * height_cell, 5 * width_cell - wallwidth, 3 * height_cell)); ///
-    Bounds.push(new gameBound(5 * width_cell, height_cell + wallwidth, 5 * width_cell, 3 * height_cell - wallwidth));//
-    Bounds.push(new gameBound(6 * width_cell, 3 * height_cell, 11 * width_cell - wallwidth, 3 * height_cell)); ///
-    Bounds.push(new gameBound(9 * width_cell, 3 * height_cell + wallwidth, 9 * width_cell, 4 * height_cell - wallwidth));///
-    Bounds.push(new gameBound(9 * width_cell + wallwidth, 4 * height_cell, 10 * width_cell, 4 * height_cell)); ///
-    Bounds.push(new gameBound(11 * width_cell, 3 * height_cell + wallwidth, 11 * width_cell, 4 * height_cell)); ///
-    Bounds.push(new gameBound(10 * width_cell, 2 * height_cell, 12 * width_cell, 2 * height_cell));
-    Bounds.push(new gameBound(12 * width_cell, 3 * height_cell, 13 * width_cell - wallwidth, 3 * height_cell)); ///
-    Bounds.push(new gameBound(13 * width_cell, 2 * height_cell, 13 * width_cell, 3 * height_cell - wallwidth)); ///
-    // End
-}
+var gameBound = require('./gameBound.js');
 
 var Tank = function(id, name, color, x, y, angle) {
     var self = Entity(x, y, angle);
+    var Bounds = gameBound();
     self.id = id;
     self.name = name;
     self.color = color;
@@ -85,14 +20,13 @@ var Tank = function(id, name, color, x, y, angle) {
     self.shootRate = 300;
 
     var super_update = self.update;
-    var super_disPxtoPy = self.disPxtoPy;
+    // var super_disPxtoPy = self.disPxtoPy;
     var super_disSegmentAtoPx = self.disSegmentAtoPx;
-
-    setBound();
+    // var super_squareTank = self.squareTank;
     self.update = function() {
         var f = true;
         for (var i = 0; i < Bounds.length; i++) {
-            var pos = super_disSegmentAtoPx(Bounds[i].x1, Bounds[i].y1, Bounds[i].x2, Bounds[i].y2, self.size);
+            var pos = super_disSegmentAtoPx(Bounds[i].x1, Bounds[i].y1, Bounds[i].x2, Bounds[i].y2, self.size, self.angle);
             if (pos == 1) self.pressingRight = false;
             if (pos == 2) self.pressingLeft = false;
             if (pos == 3) self.pressingUp = false;
@@ -103,6 +37,16 @@ var Tank = function(id, name, color, x, y, angle) {
             // }
         }
         super_update();
+        // var f2 = true;
+        // for (var i = 0; i < Bounds.length; i++) {
+        //   if (super_squareTank(Bounds[i].x1, Bounds[i].y1, Bounds[i].x2, Bounds[i].y2, self.size, self.angle) == false) {
+        //     f2 = false;
+        //     break;
+        //   }
+        // }
+        // if (f2) {
+        //   //do sth
+        // }
         self.angle = self.mouseAngle;
         self.updateSpd();
         if (self.pressingAttack) {
