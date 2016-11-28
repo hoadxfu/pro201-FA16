@@ -34,7 +34,7 @@ function setBound() {
     Bounds.push(new gameBound(13 * width_cell, height_cell, 14 * width_cell, height_cell));
     Bounds.push(new gameBound(0, 2 * height_cell, width_cell - wallwidth, 2 * height_cell)); ///
     Bounds.push(new gameBound(width_cell, 2 * height_cell + wallwidth, width_cell, 3 * height_cell - wallwidth));///
-    Bounds.push(new gameBound(width_cell, 3 * height_cell, 2 * width_cell, 3 * height_cell));
+    Bounds.push(new gameBound(width_cell + wallwidth, 3 * height_cell, 2 * width_cell, 3 * height_cell));///
     Bounds.push(new gameBound(width_cell, 4 * height_cell + wallwidth, width_cell, 7 * height_cell));///
     Bounds.push(new gameBound(width_cell + wallwidth, 4 * height_cell, 2 * width_cell, 4 * height_cell)); ///
     Bounds.push(new gameBound(width_cell + wallwidth, 5 * height_cell, 3 * width_cell, 5 * height_cell)); ///
