@@ -14,9 +14,9 @@ function gameBound(x1, y1, x2, y2) {
 var Bounds = [];
 
 function setBound() {
+    var wallwidth = 3;
     var height_cell = _gameAreaheight / 7;
     var width_cell = _gameAreawidth / 14;
-    // Bounds.push(new gameBound(width_cell, height_cell, 4*width_cell, height_cell));
     // 4 duong bao quanh map
     Bounds.push(new gameBound(0, 0, _gameAreawidth, 0));
     Bounds.push(new gameBound(0, 0, 0, _gameAreaheight));
@@ -27,46 +27,44 @@ function setBound() {
     Bounds.push(new gameBound(width_cell, 0, width_cell, height_cell));
     Bounds.push(new gameBound(2 * width_cell, height_cell, 7 * width_cell, height_cell));
     Bounds.push(new gameBound(8 * width_cell, 0, 8 * width_cell, 2 * height_cell));
-    Bounds.push(new gameBound(9 * width_cell, height_cell, 10 * width_cell, height_cell));
-    Bounds.push(new gameBound(9 * width_cell, height_cell, 9 * width_cell, 2 * height_cell));
-    Bounds.push(new gameBound(11 * width_cell, 0, 11 * width_cell, 2 * height_cell));
-    Bounds.push(new gameBound(11 * width_cell, height_cell, 12 * width_cell, height_cell));
+    Bounds.push(new gameBound(9 * width_cell + wallwidth, height_cell, 10 * width_cell, height_cell)); ///
+    Bounds.push(new gameBound(9 * width_cell, height_cell + wallwidth, 9 * width_cell, 2 * height_cell));///
+    Bounds.push(new gameBound(11 * width_cell, 0, 11 * width_cell, 2 * height_cell - wallwidth)); ///
+    Bounds.push(new gameBound(11 * width_cell + wallwidth, height_cell, 12 * width_cell, height_cell));///
     Bounds.push(new gameBound(13 * width_cell, height_cell, 14 * width_cell, height_cell));
-    Bounds.push(new gameBound(0, 2 * height_cell, width_cell, 2 * height_cell));
-    Bounds.push(new gameBound(width_cell, 2 * height_cell, width_cell, 3 * height_cell));
+    Bounds.push(new gameBound(0, 2 * height_cell, width_cell - wallwidth, 2 * height_cell)); ///
+    Bounds.push(new gameBound(width_cell, 2 * height_cell + wallwidth, width_cell, 3 * height_cell - wallwidth));///
     Bounds.push(new gameBound(width_cell, 3 * height_cell, 2 * width_cell, 3 * height_cell));
-    Bounds.push(new gameBound(width_cell, 4 * height_cell, width_cell, 7 * height_cell));
-    Bounds.push(new gameBound(width_cell, 4 * height_cell, 2 * width_cell, 4 * height_cell));
-    Bounds.push(new gameBound(width_cell, 5 * height_cell, 3 * width_cell, 5 * height_cell));
-    Bounds.push(new gameBound(2 * width_cell, 6 * height_cell, 4 * width_cell, 6 * height_cell));
-    Bounds.push(new gameBound(4 * width_cell, 4 * height_cell, 4 * width_cell, 6 * height_cell));
-    Bounds.push(new gameBound(3 * width_cell, 4 * height_cell, 6 * width_cell, 4 * height_cell));
-    Bounds.push(new gameBound(6 * width_cell, 4 * height_cell, 6 * width_cell, 5 * height_cell));
-    Bounds.push(new gameBound(5 * width_cell, 5 * height_cell, 5 * width_cell, 6 * height_cell));
-    Bounds.push(new gameBound(5 * width_cell, 6 * height_cell, 8 * width_cell, 6 * height_cell));
-    Bounds.push(new gameBound(7 * width_cell, 4 * height_cell, 7 * width_cell, 5 * height_cell));
-    Bounds.push(new gameBound(7 * width_cell, 4 * height_cell, 8 * width_cell, 4 * height_cell));
-    Bounds.push(new gameBound(8 * width_cell, 4 * height_cell, 8 * width_cell, 7 * height_cell));
-    Bounds.push(new gameBound(8 * width_cell, 5 * height_cell, 9 * width_cell, 5 * height_cell));
-    Bounds.push(new gameBound(9 * width_cell, 5 * height_cell, 9 * width_cell, 6 * height_cell));
+    Bounds.push(new gameBound(width_cell, 4 * height_cell + wallwidth, width_cell, 7 * height_cell));///
+    Bounds.push(new gameBound(width_cell + wallwidth, 4 * height_cell, 2 * width_cell, 4 * height_cell)); ///
+    Bounds.push(new gameBound(width_cell + wallwidth, 5 * height_cell, 3 * width_cell, 5 * height_cell)); ///
+    Bounds.push(new gameBound(2 * width_cell, 6 * height_cell, 4 * width_cell - wallwidth, 6 * height_cell)); ///
+    Bounds.push(new gameBound(4 * width_cell, 4 * height_cell + wallwidth, 4 * width_cell, 6 * height_cell - wallwidth)); ///
+    Bounds.push(new gameBound(3 * width_cell, 4 * height_cell, 6 * width_cell - wallwidth, 4 * height_cell));///
+    Bounds.push(new gameBound(6 * width_cell, 4 * height_cell + wallwidth, 6 * width_cell, 5 * height_cell)); ///
+    Bounds.push(new gameBound(5 * width_cell, 5 * height_cell, 5 * width_cell, 6 * height_cell - wallwidth)); ///
+    Bounds.push(new gameBound(5 * width_cell + wallwidth, 6 * height_cell, 8 * width_cell - wallwidth, 6 * height_cell)); ///
+    Bounds.push(new gameBound(7 * width_cell, 4 * height_cell + wallwidth, 7 * width_cell, 5 * height_cell));///
+    Bounds.push(new gameBound(7 * width_cell + wallwidth, 4 * height_cell, 8 * width_cell - wallwidth, 4 * height_cell)); ///
+    Bounds.push(new gameBound(8 * width_cell, 4 * height_cell + wallwidth, 8 * width_cell, 7 * height_cell)); ///
+    Bounds.push(new gameBound(8 * width_cell + wallwidth, 5 * height_cell, 9 * width_cell - wallwidth, 5 * height_cell)); ///
+    Bounds.push(new gameBound(9 * width_cell, 5 * height_cell + wallwidth, 9 * width_cell, 6 * height_cell)); ///
     Bounds.push(new gameBound(10 * width_cell, 5 * height_cell, 10 * width_cell, 7 * height_cell));
     Bounds.push(new gameBound(11 * width_cell, 5 * height_cell, 11 * width_cell, 7 * height_cell));
-    Bounds.push(new gameBound(12 * width_cell, 4 * height_cell, 12 * width_cell, 6 * height_cell));
-    Bounds.push(new gameBound(12 * width_cell, 4 * height_cell, 13 * width_cell, 4 * height_cell));
-    Bounds.push(new gameBound(13 * width_cell, 4 * height_cell, 13 * width_cell, 7 * height_cell));
+    Bounds.push(new gameBound(12 * width_cell, 4 * height_cell + wallwidth, 12 * width_cell, 6 * height_cell)); ////
+    Bounds.push(new gameBound(12 * width_cell + wallwidth, 4 * height_cell, 13 * width_cell - wallwidth, 4 * height_cell)); ///
+    Bounds.push(new gameBound(13 * width_cell, 4 * height_cell + wallwidth, 13 * width_cell, 7 * height_cell)); ////
     Bounds.push(new gameBound(2 * width_cell, 2 * height_cell, 4 * width_cell, 2 * height_cell));
-    Bounds.push(new gameBound(3 * width_cell, height_cell, 3 * width_cell, 2 * height_cell));
-    Bounds.push(new gameBound(3 * width_cell, 3 * height_cell, 5 * width_cell, 3 * height_cell));
-    Bounds.push(new gameBound(5 * width_cell, 3 * height_cell, 5 * width_cell, height_cell));
-    Bounds.push(new gameBound(6 * width_cell, 2 * height_cell, 7 * width_cell, 2 * height_cell));
-    Bounds.push(new gameBound(7 * width_cell, 2 * height_cell, 7 * width_cell, 3 * height_cell));
-    Bounds.push(new gameBound(6 * width_cell, 3 * height_cell, 11 * width_cell, 3 * height_cell));
-    Bounds.push(new gameBound(9 * width_cell, 3 * height_cell, 9 * width_cell, 4 * height_cell));
-    Bounds.push(new gameBound(9 * width_cell, 4 * height_cell, 10 * width_cell, 4 * height_cell));
-    Bounds.push(new gameBound(11 * width_cell, 3 * height_cell, 11 * width_cell, 4 * height_cell));
+    Bounds.push(new gameBound(3 * width_cell, height_cell + wallwidth, 3 * width_cell, 2 * height_cell - wallwidth)); ///
+    Bounds.push(new gameBound(3 * width_cell, 3 * height_cell, 5 * width_cell - wallwidth, 3 * height_cell)); ///
+    Bounds.push(new gameBound(5 * width_cell, height_cell + wallwidth, 5 * width_cell, 3 * height_cell - wallwidth));//
+    Bounds.push(new gameBound(6 * width_cell, 3 * height_cell, 11 * width_cell - wallwidth, 3 * height_cell)); ///
+    Bounds.push(new gameBound(9 * width_cell, 3 * height_cell + wallwidth, 9 * width_cell, 4 * height_cell - wallwidth));///
+    Bounds.push(new gameBound(9 * width_cell + wallwidth, 4 * height_cell, 10 * width_cell, 4 * height_cell)); ///
+    Bounds.push(new gameBound(11 * width_cell, 3 * height_cell + wallwidth, 11 * width_cell, 4 * height_cell)); ///
     Bounds.push(new gameBound(10 * width_cell, 2 * height_cell, 12 * width_cell, 2 * height_cell));
-    Bounds.push(new gameBound(12 * width_cell, 3 * height_cell, 13 * width_cell, 3 * height_cell));
-    Bounds.push(new gameBound(13 * width_cell, 3 * height_cell, 13 * width_cell, 2 * height_cell));
+    Bounds.push(new gameBound(12 * width_cell, 3 * height_cell, 13 * width_cell - wallwidth, 3 * height_cell)); ///
+    Bounds.push(new gameBound(13 * width_cell, 2 * height_cell, 13 * width_cell, 3 * height_cell - wallwidth)); ///
     // End
 }
 

@@ -59,13 +59,13 @@ var Entity = function(x, y, angle) {
         var distance = ((y2 - y1) * (newXPos - x1) - (x2 - x1) * (newYPos - y1)) / (Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1)));
         if (Math.abs(distance) <= size && (newXPos >= xMin && newXPos < xMax) && (newYPos >= yMin && newYPos < yMax)) {
             if (Math.sign(distance) < 0) {
-                if (self.x < x1 && self.x < x2) {
+                if (newXPos < x1 && newXPos < x2) {
                     return 1 //left
                 } else {
                     return 3; //under
                 }
             } else {
-                if (self.x > x1 && self.x > x2) {
+                if (newXPos > x1 && newXPos > x2) {
                     return 2; //right
                 } else {
                     return 4; //on

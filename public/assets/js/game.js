@@ -21,7 +21,6 @@ $(document).ready(function() {
   var maps = [];
   var height_cell = _gameArea.height/7;
   var width_cell = _gameArea.width/14;
-  // maps.push(new Wall(width_cell, height_cell, width_cell, height_cell));
   maps.push(new Wall(width_cell, 0, width_cell, height_cell));
   maps.push(new Wall(2*width_cell, height_cell, 7*width_cell, height_cell));
   maps.push(new Wall(8*width_cell, 0, 8*width_cell, 2*height_cell));
@@ -56,8 +55,6 @@ $(document).ready(function() {
   maps.push(new Wall(3*width_cell, height_cell, 3*width_cell, 2*height_cell));
   maps.push(new Wall(3*width_cell, 3*height_cell, 5*width_cell, 3*height_cell));
   maps.push(new Wall(5*width_cell, 3*height_cell, 5*width_cell, height_cell));
-  maps.push(new Wall(6*width_cell, 2*height_cell, 7*width_cell, 2*height_cell));
-  maps.push(new Wall(7*width_cell, 2*height_cell, 7*width_cell, 3*height_cell));
   maps.push(new Wall(6*width_cell, 3*height_cell, 11*width_cell, 3*height_cell));
   maps.push(new Wall(9*width_cell, 3*height_cell, 9*width_cell, 4*height_cell));
   maps.push(new Wall(9*width_cell, 4*height_cell, 10*width_cell, 4*height_cell));
