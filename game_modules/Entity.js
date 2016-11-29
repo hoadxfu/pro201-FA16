@@ -86,22 +86,22 @@ var Entity = function(x, y, angle) {
         return 0;
     }
 
-    // self.squareTank = function(x1, y1, x2, y2, size, angle) {
-    //     var xMint = Math.min(x1, x2) - (size / 2 + 1);
-    //     var xMaxt = Math.max(x1, x2) + (size / 2 + 1);
-    //     var yMint = Math.min(y1, y2) - (size / 2 + 1);
-    //     var yMaxt = Math.max(y1, y2) + (size / 2) + 1;
-    //     var newXPos = self.x + self.spdX;
-    //     var newYPos = self.y + self.spdY;
-    //     var xq = newXPos + 1.5 * size * Math.cos(angle);
-    //     var yq = newYPos + 1.5 * size * Math.sin(angle);
-    //     var dis = Math.abs(((y2 - y1) * (xq - x1) - (x2 - x1) * (yq - y1))) / (Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1)));
-    //     if (dis <= (size / 2 + 2)) {
-    //         return false;
-    //     } else {
-    //         return true;
-    //     }
-    // }
+    self.squareTank = function(x1, y1, x2, y2, size, angle) {
+        var xMint = Math.min(x1, x2) - (size / 2 + 1);
+        var xMaxt = Math.max(x1, x2) + (size / 2 + 1);
+        var yMint = Math.min(y1, y2) - (size / 2 + 1);
+        var yMaxt = Math.max(y1, y2) + (size / 2) + 1;
+        var newXPos = self.x + self.spdX;
+        var newYPos = self.y + self.spdY;
+        var xq = newXPos + 1.5 * size * Math.cos(angle);
+        var yq = newYPos + 1.5 * size * Math.sin(angle);
+        var dis = Math.abs(((y2 - y1) * (xq - x1) - (x2 - x1) * (yq - y1))) / (Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1)));
+        if (dis <= (size / 2 + 2)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
     return self;
 }

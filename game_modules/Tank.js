@@ -22,22 +22,33 @@ var Tank = function(id, name, color, x, y, angle) {
     var super_update = self.update;
     // var super_disPxtoPy = self.disPxtoPy;
     var super_disSegmentAtoPx = self.disSegmentAtoPx;
-    // var super_squareTank = self.squareTank;
+    var super_squareTank = self.squareTank;
     self.update = function() {
         var f = true;
+        var f2 = true;
+        var tempi;
         for (var i = 0; i < Bounds.length; i++) {
             var pos = super_disSegmentAtoPx(Bounds[i].x1, Bounds[i].y1, Bounds[i].x2, Bounds[i].y2, self.size, self.angle);
             if (pos == 1) self.pressingRight = false;
             if (pos == 2) self.pressingLeft = false;
             if (pos == 3) self.pressingUp = false;
             if (pos == 4) self.pressingDown = false;
-            // if (pos > 0) {
-            //     f = false;
-            //     break;
-            // }
+            if (pos > 0) {
+                tempi = i;
+                break;
+            }
         }
         super_update();
-        // var f2 = true;
+        if (typeof Bounds[tempi] != 'undefined')
+            f2 = super_squareTank(Bounds[tempi].x1, Bounds[tempi].y1, Bounds[tempi].x2, Bounds[tempi].y2, self.size, self.angle);
+        if (f2) {
+            self.angle = self.mouseAngle;
+            if (self.pressingAttack) {
+                self.shootBullet(self.mouseAngle);
+            }
+        }
+        f2 = true;
+        self.updateSpd();
         // for (var i = 0; i < Bounds.length; i++) {
         //   if (super_squareTank(Bounds[i].x1, Bounds[i].y1, Bounds[i].x2, Bounds[i].y2, self.size, self.angle) == false) {
         //     f2 = false;
@@ -47,11 +58,11 @@ var Tank = function(id, name, color, x, y, angle) {
         // if (f2) {
         //   //do sth
         // }
-        self.angle = self.mouseAngle;
-        self.updateSpd();
-        if (self.pressingAttack) {
-            self.shootBullet(self.mouseAngle);
-        }
+        // self.angle = self.mouseAngle;
+        // self.updateSpd();
+        // if (self.pressingAttack) {
+        //     self.shootBullet(self.mouseAngle);
+        // }
     }
 
     self.shootBullet = function(angle) {
