@@ -9,5 +9,4 @@ HTML5, JavaScript, CSS<br/>
 NodeJS<br/>
 Websocket: Socket.io
 # License
-The MIT License (MIT)<br/>
 Copyright (c) 2016 hoadx
