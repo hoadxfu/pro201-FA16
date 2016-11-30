@@ -28,27 +28,22 @@ var Entity = function(x, y, angle) {
         return true;
     }
 
-    // self.disSegmentAtoPx = function(x1, y1, x2, y2, size) {
-    //     var xMin = Math.min(x1, x2) - size;
-    //     var xMax = Math.max(x1, x2) + size;
-    //     var yMin = Math.min(y1, y2) - size;
-    //     var yMax = Math.max(y1, y2) + size;
-    //     var newXPos = self.x + self.spdX;
-    //     var newYPos = self.y + self.spdY;
-    //
-    //     var distanceArr = [];
-    //     function distance(x, y) {
-    //       return Math.abs(((y2 - y1) * (x - x1) - (x2 - x1) * (y - y1))) / (Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1)));
-    //     }
-    //     distanceArr.push(distance(newXPos, newYPos));
-    //     for (var i = 0; i < distanceArr.length; i++) {
-    //       if (distanceArr[i] < size && (newXPos >= xMin && newXPos < xMax) && (newYPos >= yMin && newYPos < yMax)) {
-    //           return false;
-    //       }
-    //     }
-    //     return true;
-    // }
-    // Backup
+    self.disBullet = function(x1, y1, x2, y2, size) {
+            var xMin = Math.min(x1, x2) -2*size;
+            var xMax = Math.max(x1, x2) + 2*size;
+            var yMin = Math.min(y1, y2) - 2*size;
+            var yMax = Math.max(y1, y2) + 2*size;
+            var distance;
+            if (x1 == x2)
+              distance = Math.abs(self.x - x1);
+            if (y1 == y2)
+              distance = Math.abs(self.y - y1);
+            if (distance < 1.5*size && (self.x >= xMin && self.x < xMax) && (self.y >= yMin && self.y < yMax)) {
+                return false;
+            }
+            return true;
+        }
+
     self.disSegmentAtoPx = function(x1, y1, x2, y2, size, angle) {
         var xMin = Math.min(x1, x2) - size;
         var xMax = Math.max(x1, x2) + size;

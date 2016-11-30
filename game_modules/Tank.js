@@ -1,10 +1,10 @@
 var Entity = require('./Entity.js');
 var Bullet = require('./Bullet.js');
-var gameBound = require('./gameBound.js');
+var GameBound = require('./GameBound.js');
 
 var Tank = function(id, name, color, x, y, angle) {
     var self = Entity(x, y, angle);
-    var Bounds = gameBound();
+    var Bounds = GameBound();
     self.id = id;
     self.name = name;
     self.color = color;

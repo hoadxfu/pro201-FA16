@@ -5,7 +5,7 @@ function Wall(x1, y1, x2, y2) {
     this.y2 = y2;
 }
 
-var gameBound = function() {
+var GameBound = function() {
     // Set gameBound
     var _gameAreawidth = 1366 - 200;
     var _gameAreaheight = 550;
@@ -67,4 +67,4 @@ var gameBound = function() {
     return Bounds;
 }
 
-module.exports = gameBound;
+module.exports = GameBound;
