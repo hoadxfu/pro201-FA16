@@ -6,9 +6,9 @@ var Bullet = function(parent, x, y, angle) {
     var self = Entity(x, y, angle);
     var Bounds = GameBound();
     self.id = Math.random();
-    self.speed = 10;
-    self.spdX = Math.cos(angle) * self.speed;
-    self.spdY = Math.sin(angle) * self.speed;
+    self.speed = 5;
+    self.spdX = Math.cos(self.angle) * self.speed;
+    self.spdY = Math.sin(self.angle) * self.speed;
     self.parent = parent;
     self.timer = 0;
     self.size = 4;
@@ -18,12 +18,16 @@ var Bullet = function(parent, x, y, angle) {
     self.update = function() {
         if (self.timer++ > 100)
             self.toRemove = true;
+
         super_update();
 
-        for (var i = 0; i < Bounds.length; i++){
-          if (super_disBullet(Bounds[i].x1, Bounds[i].y1, Bounds[i].x2, Bounds[i].y2, self.size) == false){
-            self.toRemove = true;
-          }
+        for (var i = 0; i < Bounds.length; i++) {
+            if (super_disBullet(Bounds[i].x1, Bounds[i].y1, Bounds[i].x2, Bounds[i].y2, self.size) == false) {
+                // self.toRemove = true;
+                self.angle = -self.angle;
+                self.spdX = Math.cos(self.angle) * self.speed;
+                self.spdY = Math.sin(self.angle) * self.speed;
+            }
         }
 
         // for (var i in Tank.list) {

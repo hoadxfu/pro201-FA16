@@ -22,7 +22,7 @@ var GameBound = function() {
     Bounds.push(new Wall(_gameAreawidth, _gameAreaheight, _gameAreawidth, 0));
     // end
     // tuong ben trong Map
-    Bounds.push(new Wall(width_cell, 0, width_cell, height_cell));
+    // Bounds.push(new Wall(width_cell, 0, width_cell, height_cell));
     Bounds.push(new Wall(2 * width_cell, height_cell, 7 * width_cell, height_cell));
     Bounds.push(new Wall(8 * width_cell, 0, 8 * width_cell, 2 * height_cell));
     Bounds.push(new Wall(9 * width_cell + wallwidth, height_cell, 10 * width_cell, height_cell)); ///
@@ -51,7 +51,7 @@ var GameBound = function() {
     Bounds.push(new Wall(11 * width_cell, 5 * height_cell, 11 * width_cell, 7 * height_cell));
     Bounds.push(new Wall(12 * width_cell, 4 * height_cell + wallwidth, 12 * width_cell, 6 * height_cell)); ////
     Bounds.push(new Wall(12 * width_cell + wallwidth, 4 * height_cell, 13 * width_cell - wallwidth, 4 * height_cell)); ///
-    Bounds.push(new Wall(13 * width_cell, 4 * height_cell + wallwidth, 13 * width_cell, 7 * height_cell)); ////
+    Bounds.push(new Wall(13 * width_cell, 4 * height_cell + wallwidth, 13 * width_cell, 5 * height_cell)); ////
     Bounds.push(new Wall(2 * width_cell, 2 * height_cell, 4 * width_cell, 2 * height_cell));
     Bounds.push(new Wall(3 * width_cell, height_cell + wallwidth, 3 * width_cell, 2 * height_cell - wallwidth)); ///
     Bounds.push(new Wall(3 * width_cell, 3 * height_cell, 5 * width_cell - wallwidth, 3 * height_cell)); ///
