@@ -10,5 +10,6 @@ Wall.prototype.lineDraw = function(ctx) {
     ctx.lineWidth = 2;
     ctx.moveTo(this.x1, this.y1);
     ctx.lineTo(this.x2, this.y2);
+    ctx.strokeStyle = '#b2b2b2';
     ctx.stroke();
 }

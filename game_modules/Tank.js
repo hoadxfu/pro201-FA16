@@ -28,7 +28,7 @@ var Tank = function(id, name, color, x, y, angle) {
         var f2 = true;
         var tempi;
         for (var i = 0; i < Bounds.length; i++) {
-            var pos = super_disSegmentAtoPx(Bounds[i].x1, Bounds[i].y1, Bounds[i].x2, Bounds[i].y2, self.size, self.angle);
+            var pos = super_disSegmentAtoPx(Bounds[i].x1, Bounds[i].y1, Bounds[i].x2, Bounds[i].y2, self.size, self.mouseAngle);
             if (pos == 1) self.pressingRight = false;
             if (pos == 2) self.pressingLeft = false;
             if (pos == 3) self.pressingUp = false;
@@ -40,14 +40,14 @@ var Tank = function(id, name, color, x, y, angle) {
         }
         super_update();
         if (typeof Bounds[tempi] != 'undefined')
-            f2 = super_squareTank(Bounds[tempi].x1, Bounds[tempi].y1, Bounds[tempi].x2, Bounds[tempi].y2, self.size, self.angle);
+            f2 = super_squareTank(Bounds[tempi].x1, Bounds[tempi].y1, Bounds[tempi].x2, Bounds[tempi].y2, self.size, self.mouseAngle);
         if (f2) {
             self.angle = self.mouseAngle;
             if (self.pressingAttack) {
                 self.shootBullet(self.mouseAngle);
             }
         }
-        f2 = true;
+        // if (!f2) self.angle -= 0.0174;
         self.updateSpd();
         // for (var i = 0; i < Bounds.length; i++) {
         //   if (super_squareTank(Bounds[i].x1, Bounds[i].y1, Bounds[i].x2, Bounds[i].y2, self.size, self.angle) == false) {
@@ -69,8 +69,8 @@ var Tank = function(id, name, color, x, y, angle) {
         var now = (new Date()).getTime();
         if (now - self.lastShootTime < this.shootRate) return;
         self.lastShootTime = now;
-        var b = Bullet(self.id, self.x + (self.size * 2 + 8) * Math.cos(self.angle),
-            self.y + (self.size * 2 + 8) * Math.sin(self.angle), angle);
+        var b = Bullet(self.id, self.x + (self.size * 2 + 1) * Math.cos(self.angle),
+            self.y + (self.size * 2 + 1) * Math.sin(self.angle), angle);
     }
 
 

@@ -66,8 +66,8 @@ $(document).ready(function() {
     $('#login-form').submit(function() {
         tankname = $('#login-form input[name="tankname"]').val().trim();
         tankcolor = _COLORS[Math.floor((Math.random() * 11) + 0)];
-        tankXPos = Math.floor((Math.random() * _gameArea.width) + 1);
-        tankYPos = Math.floor((Math.random() * _gameArea.height) + 1);
+        tankXPos = Math.floor((Math.random() * width_cell) + 1);
+        tankYPos = Math.floor((Math.random() * height_cell) + 1);
         tank = new Tank(tankname, tankcolor, tankXPos, tankYPos, 0);
 
         _loginPage.fadeOut();
@@ -150,6 +150,7 @@ $(document).ready(function() {
     }
 
     socket.on('newPositions', function(data) {
+        console.log(data);
         ctx.clearRect(0, 0, _gameArea.width, _gameArea.height);
         drawWorld();
         for (var i = 0; i < data.tank.length; i++) {
