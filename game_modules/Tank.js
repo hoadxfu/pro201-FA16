@@ -29,10 +29,10 @@ var Tank = function(id, name, color, x, y, angle) {
         var tempi;
         for (var i = 0; i < Bounds.length; i++) {
             var pos = super_disSegmentAtoPx(Bounds[i].x1, Bounds[i].y1, Bounds[i].x2, Bounds[i].y2, self.size, self.mouseAngle);
-            if (pos == 1) self.updateSpd(1);
-            if (pos == 2) self.updateSpd(2);
-            if (pos == 3) self.updateSpd(3);
-            if (pos == 4) self.updateSpd(4);
+            if (pos == 1) self.pressingRight = false;
+            if (pos == 2) self.pressingLeft = false;
+            if (pos == 3) self.pressingUp = false;
+            if (pos == 4) self.pressingDown = false;
             if (pos > 0) {
                 tempi = i;
                 break;
@@ -47,7 +47,22 @@ var Tank = function(id, name, color, x, y, angle) {
                 self.shootBullet(self.mouseAngle);
             }
         }
-        self.updateSpd(0);
+        // if (!f2) self.angle -= 0.0174;
+        self.updateSpd();
+        // for (var i = 0; i < Bounds.length; i++) {
+        //   if (super_squareTank(Bounds[i].x1, Bounds[i].y1, Bounds[i].x2, Bounds[i].y2, self.size, self.angle) == false) {
+        //     f2 = false;
+        //     break;
+        //   }
+        // }
+        // if (f2) {
+        //   //do sth
+        // }
+        // self.angle = self.mouseAngle;
+        // self.updateSpd();
+        // if (self.pressingAttack) {
+        //     self.shootBullet(self.mouseAngle);
+        // }
     }
 
     self.shootBullet = function(angle) {
@@ -59,54 +74,20 @@ var Tank = function(id, name, color, x, y, angle) {
     }
 
 
-    self.updateSpd = function(modeSpd) {
-        var tempU = self.pressingUp;
-        var tempD = self.pressingDown;
-        var tempL = self.pressingLeft;
-        var tempR = self.pressingRight;
-        switch (modeSpd) {
-            case 1:
-                tempR = false;
-                break;
-            case 2:
-                tempL = false;
-                break;
-            case 3:
-                tempU = false;
-                break;
-            case 4:
-                tempD = false;
-                break;
-        }
-        if (modeSpd == 0) {
-            if (self.pressingRight)
-                self.spdX = self.maxSpd;
-            else if (self.pressingLeft)
-                self.spdX = -self.maxSpd;
-            else
-                self.spdX = 0;
+    self.updateSpd = function() {
+        if (self.pressingRight)
+            self.spdX = self.maxSpd;
+        else if (self.pressingLeft)
+            self.spdX = -self.maxSpd;
+        else
+            self.spdX = 0;
 
-            if (self.pressingUp)
-                self.spdY = -self.maxSpd;
-            else if (self.pressingDown)
-                self.spdY = self.maxSpd;
-            else
-                self.spdY = 0;
-        } else {
-            if (tempR)
-                self.spdX = self.maxSpd;
-            else if (tempL)
-                self.spdX = -self.maxSpd;
-            else
-                self.spdX = 0;
-
-            if (tempU)
-                self.spdY = -self.maxSpd;
-            else if (tempD)
-                self.spdY = self.maxSpd;
-            else
-                self.spdY = 0;
-        }
+        if (self.pressingUp)
+            self.spdY = -self.maxSpd;
+        else if (self.pressingDown)
+            self.spdY = self.maxSpd;
+        else
+            self.spdY = 0;
     }
     Tank.list[id] = self;
     return self;
