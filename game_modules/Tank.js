@@ -18,7 +18,7 @@ var Tank = function(id, name, color, x, y, angle) {
     self.size = 15;
     self.lastShootTime = 0;
     self.shootRate = 300;
-
+    self.status = true;
     var super_update = self.update;
     // var super_disPxtoPy = self.disPxtoPy;
     var super_disSegmentAtoPx = self.disSegmentAtoPx;

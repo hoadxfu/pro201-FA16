@@ -35,7 +35,7 @@ var Entity = function(x, y, angle) {
               distance = Math.abs(self.x - x1);
             if (y1 == y2)
               distance = Math.abs(self.y - y1);
-            if (distance < 2*size && (self.x >= xMin && self.x < xMax) && (self.y >= yMin && self.y < yMax)) {
+            if (distance < 3*size && (self.x >= xMin && self.x < xMax) && (self.y >= yMin && self.y < yMax)) {
                 if (x1 == x2) {
                   return 1;
                 } else {
