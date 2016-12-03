@@ -34,7 +34,9 @@ var Bullet = function(parent, x, y, angle, tankList) {
                   self.spdY = Math.sin(self.angle) * self.speed;
                 }
                 if (re == 1) {
-                  self.angle = (Math.PI/2+self.angle);
+                  // console.log(self.angle);
+                  // console.log(self.angle - Math.PI/2);
+                  self.angle = (Math.PI-self.angle);
                   self.spdX = Math.cos(self.angle) * self.speed;
                   self.spdY = Math.sin(self.angle) * self.speed;
                 }
