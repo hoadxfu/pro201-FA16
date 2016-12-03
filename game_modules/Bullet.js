@@ -24,11 +24,21 @@ var Bullet = function(parent, x, y, angle, tankList) {
         super_update();
 
         for (var i = 0; i < Bounds.length; i++) {
-            if (super_disBullet(Bounds[i].x1, Bounds[i].y1, Bounds[i].x2, Bounds[i].y2, self.size) == false) {
+            var re = super_disBullet(Bounds[i].x1, Bounds[i].y1, Bounds[i].x2, Bounds[i].y2, self.size);
+
+            if (re != 0) {
                 // self.toRemove = true;
-                self.angle = -self.angle;
-                self.spdX = Math.cos(self.angle) * self.speed;
-                self.spdY = Math.sin(self.angle) * self.speed;
+                if (re == 2) {
+                  self.angle = -self.angle;
+                  self.spdX = Math.cos(self.angle) * self.speed;
+                  self.spdY = Math.sin(self.angle) * self.speed;
+                }
+                if (re == 1) {
+                  self.angle = (Math.PI/2+self.angle);
+                  self.spdX = Math.cos(self.angle) * self.speed;
+                  self.spdY = Math.sin(self.angle) * self.speed;
+                }
+
             }
         }
         for (var i in self.tankList) {

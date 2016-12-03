@@ -36,9 +36,13 @@ var Entity = function(x, y, angle) {
             if (y1 == y2)
               distance = Math.abs(self.y - y1);
             if (distance < 1.5*size && (self.x >= xMin && self.x < xMax) && (self.y >= yMin && self.y < yMax)) {
-                return false;
+                if (x1 == x2) {
+                  return 1;
+                } else {
+                  return 2;
+                }
             }
-            return true;
+            return 0;
         }
 
     self.disSegmentAtoPx = function(x1, y1, x2, y2, size, angle) {
