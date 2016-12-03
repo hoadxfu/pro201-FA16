@@ -18,14 +18,11 @@ var Entity = function(x, y, angle) {
         return Math.sqrt(Math.pow(self.x - pt.x, 2) + Math.pow(self.y - pt.y, 2));
     }
 
-    self.disPxtoPy = function(xPos, yPos) {
-        var width = Math.abs(self.x - xPos);
-        var height = Math.abs(self.y - yPos);
+    self.disPxtoPy = function(xPos1, yPos1, xPos2, yPos2) {
+        var width = Math.abs(xPos2 - xPos1);
+        var height = Math.abs(yPos2 - yPos1);
         var distance = Math.sqrt(width * width + height * height);
-        if (distance <= 10) {
-            return false;
-        }
-        return true;
+        return distance;
     }
 
     self.disBullet = function(x1, y1, x2, y2, size) {
@@ -96,6 +93,12 @@ var Entity = function(x, y, angle) {
         } else {
             return true;
         }
+    }
+
+    self.bulletTank = function (xb, yb, xt, yt, sizeb, sizet) {
+      if (self.disPxtoPy(xb, yb, xt, yt) <= (sizet+sizeb))
+        return false;
+      return true;
     }
 
     return self;

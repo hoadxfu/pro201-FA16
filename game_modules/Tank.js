@@ -55,7 +55,7 @@ var Tank = function(id, name, color, x, y, angle) {
         if (now - self.lastShootTime < this.shootRate) return;
         self.lastShootTime = now;
         var b = Bullet(self.id, self.x + (self.size * 2 + 1) * Math.cos(self.angle),
-            self.y + (self.size * 2 + 1) * Math.sin(self.angle), angle);
+            self.y + (self.size * 2 + 1) * Math.sin(self.angle), angle, Tank.list);
     }
 
 
@@ -135,6 +135,9 @@ Tank.onDisconnect = function(socket) {
 }
 Tank.update = function() {
     var pack = [];
+    if (typeof Bullet.tankList != 'undefined') {
+      Tank.list = Bullet.tankList;
+    }
     for (var i in Tank.list) {
         var tank = Tank.list[i];
         tank.update();

@@ -2,9 +2,10 @@ var Entity = require('./Entity.js');
 var Tank = require('./Tank.js');
 var GameBound = require('./GameBound.js');
 
-var Bullet = function(parent, x, y, angle) {
+var Bullet = function(parent, x, y, angle, tankList) {
     var self = Entity(x, y, angle);
     var Bounds = GameBound();
+    self.tankList = tankList;
     self.id = Math.random();
     self.speed = 5;
     self.spdX = Math.cos(self.angle) * self.speed;
@@ -15,6 +16,7 @@ var Bullet = function(parent, x, y, angle) {
     self.toRemove = false;
     var super_update = self.update;
     var super_disBullet = self.disBullet;
+    var super_bulletTank = self.bulletTank;
     self.update = function() {
         if (self.timer++ > 100)
             self.toRemove = true;
@@ -29,14 +31,13 @@ var Bullet = function(parent, x, y, angle) {
                 self.spdY = Math.sin(self.angle) * self.speed;
             }
         }
-
-        // for (var i in Tank.list) {
-        //     var p = Tank.list[i];
-        //     if (self.getDistance(p) < 32 && self.parent !== p.id) {
-        //         //handle collision. ex: hp--;
-        //         self.toRemove = true;
-        //     }
-        // }
+        for (var i in self.tankList) {
+            var tank = self.tankList[i];
+            if (super_bulletTank(self.x, self.y, tank.x, tank.y, self.size, tank.size) == false) {
+                //handle collision. ex: hp--;
+                delete self.tankList[i];
+            }
+        }
     }
     Bullet.list[self.id] = self;
     return self;
