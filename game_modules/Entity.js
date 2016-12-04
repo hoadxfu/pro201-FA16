@@ -107,8 +107,10 @@ var Entity = function(x, y, angle) {
         }
     }
 
-    self.bulletTank = function(xb, yb, xt, yt, sizeb, sizet) {
-        if (self.disPxtoPy(xb, yb, xt, yt) <= (sizet + sizeb))
+    self.bulletTank = function(xb, yb, xt, yt, sizeb, sizet, angle) {
+        var xq = xt + 1.5 * sizet * Math.cos(angle);
+        var yq = yt + 1.5 * sizet * Math.sin(angle);
+        if (self.disPxtoPy(xb, yb, xt, yt) <= (sizet + sizeb) || self.disPxtoPy(xb, yb, xq, yq) <= (sizet/2 + sizeb))
             return false;
         return true;
     }

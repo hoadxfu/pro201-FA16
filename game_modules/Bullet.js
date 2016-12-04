@@ -44,7 +44,7 @@ var Bullet = function(parent, x, y, angle, tankList) {
         for (var i in self.tankList)
             if (self.tankList[i].status == 0) {
                 var tank = self.tankList[i];
-                if (super_bulletTank(self.x, self.y, tank.x, tank.y, self.size, tank.size) == false) {
+                if (super_bulletTank(self.x, self.y, tank.x, tank.y, self.size, tank.size, tank.angle) == false) {
                     //handle collision. ex: hp--;
                     self.tankList[i].status = 1;
                 }
