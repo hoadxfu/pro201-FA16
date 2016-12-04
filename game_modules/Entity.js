@@ -26,26 +26,34 @@ var Entity = function(x, y, angle) {
     }
 
     self.disBullet = function(x1, y1, x2, y2, size) {
-            var xMin = Math.min(x1, x2) -2*size;
-            var xMax = Math.max(x1, x2) + 2*size;
-            var yMin = Math.min(y1, y2) - 2*size;
-            var yMax = Math.max(y1, y2) + 2*size;
-            var distance;
-            if (x1 == x2)
-              distance = Math.abs(self.x - x1);
-            if (y1 == y2)
-              distance = Math.abs(self.y - y1);
-            if (distance < 3*size && (self.x >= xMin && self.x < xMax) && (self.y >= yMin && self.y < yMax)) {
-                if (x1 == x2) {
-                  return 1;
-                } else {
-                  return 2;
-                }
+        var xMin = Math.min(x1, x2) - 2 * size;
+        var xMax = Math.max(x1, x2) + 2 * size;
+        var yMin = Math.min(y1, y2) - 2 * size;
+        var yMax = Math.max(y1, y2) + 2 * size;
+        var distance;
+        if (x1 == x2)
+            distance = Math.abs(self.x - x1);
+        if (y1 == y2)
+            distance = Math.abs(self.y - y1);
+        if (distance < 3 * size && (self.x >= xMin && self.x < xMax) && (self.y >= yMin && self.y < yMax)) {
+            if (x1 == x2) {
+                return 1;
+            } else {
+                return 2;
             }
-            return 0;
         }
+        return 0;
+    }
 
     self.disSegmentAtoPx = function(x1, y1, x2, y2, size, angle) {
+        Math.sign = Math.sign || function(x) {
+            x = +x; // convert to a number
+            if (x === 0 || isNaN(x)) {
+                return Number(x);
+            }
+            return x > 0 ? 1 : -1;
+        }
+
         var xMin = Math.min(x1, x2) - size;
         var xMax = Math.max(x1, x2) + size;
         var yMin = Math.min(y1, y2) - size;
@@ -99,10 +107,10 @@ var Entity = function(x, y, angle) {
         }
     }
 
-    self.bulletTank = function (xb, yb, xt, yt, sizeb, sizet) {
-      if (self.disPxtoPy(xb, yb, xt, yt) <= (sizet+sizeb))
-        return false;
-      return true;
+    self.bulletTank = function(xb, yb, xt, yt, sizeb, sizet) {
+        if (self.disPxtoPy(xb, yb, xt, yt) <= (sizet + sizeb))
+            return false;
+        return true;
     }
 
     return self;
