@@ -26,14 +26,24 @@ var Tank = function(id, name, color, x, y, angle) {
     self.update = function() {
         var f = true;
         var f2 = true;
-        var tempi;
+        var tempi, pos, pos2;
         for (var i = 0; i < Bounds.length; i++) {
-            var pos = super_disSegmentAtoPx(Bounds[i].x1, Bounds[i].y1, Bounds[i].x2, Bounds[i].y2, self.size, self.mouseAngle);
-            if (pos == 1) self.updateSpd(1);
-            if (pos == 2) self.updateSpd(2);
-            if (pos == 3) self.updateSpd(3);
-            if (pos == 4) self.updateSpd(4);
+            pos = super_disSegmentAtoPx(Bounds[i].x1, Bounds[i].y1, Bounds[i].x2, Bounds[i].y2, self.size, self.mouseAngle);
+            if (pos == 1) self.updateSpd(1, 0);
+            if (pos == 2) self.updateSpd(2, 0);
+            if (pos == 3) self.updateSpd(3, 0);
+            if (pos == 4) self.updateSpd(4, 0);
             if (pos > 0) {
+                for (var j = 0; j < Bounds.length; j++) {
+                    pos2 = super_disSegmentAtoPx(Bounds[j].x1, Bounds[j].y1, Bounds[j].x2, Bounds[j].y2, self.size, self.mouseAngle);
+                    if (i != j && pos2 > 0) {
+                        if (pos2 == 1) self.updateSpd(1, pos);
+                        if (pos2 == 2) self.updateSpd(2, pos);
+                        if (pos2 == 3) self.updateSpd(3, pos);
+                        if (pos2 == 4) self.updateSpd(4, pos);
+                        break;
+                    }
+                }
                 tempi = i;
                 break;
             }
@@ -47,7 +57,7 @@ var Tank = function(id, name, color, x, y, angle) {
                 self.shootBullet(self.mouseAngle);
             }
         }
-        self.updateSpd(0);
+        self.updateSpd(0, 0);
     }
 
     self.shootBullet = function(angle) {
@@ -59,26 +69,38 @@ var Tank = function(id, name, color, x, y, angle) {
     }
 
 
-    self.updateSpd = function(modeSpd) {
+    self.updateSpd = function(modeSpd1, modeSpd2) {
         var tempU = self.pressingUp;
         var tempD = self.pressingDown;
         var tempL = self.pressingLeft;
         var tempR = self.pressingRight;
-        switch (modeSpd) {
-            case 1:
-                tempR = false;
-                break;
-            case 2:
-                tempL = false;
-                break;
-            case 3:
-                tempU = false;
-                break;
-            case 4:
-                tempD = false;
-                break;
+        switch (modeSpd1) {
+          case 1:
+              tempR = false;
+              if (modeSpd2 == 2) tempL = false;
+              if (modeSpd2 == 3) tempU = false;
+              if (modeSpd2 == 4) tempD = false;
+              break;
+          case 2:
+              tempL = false;
+              if (modeSpd2 == 1) tempR = false;
+              if (modeSpd2 == 3) tempU = false;
+              if (modeSpd2 == 4) tempD = false;
+              break;
+          case 3:
+              tempU = false;
+              if (modeSpd2 == 1) tempR = false;
+              if (modeSpd2 == 2) tempL = false;
+              if (modeSpd2 == 4) tempD = false;
+              break;
+          case 4:
+              tempD = false;
+              if (modeSpd2 == 1) tempR = false;
+              if (modeSpd2 == 2) tempL = false;
+              if (modeSpd2 == 3) tempU = false;
+              break;
         }
-        if (modeSpd == 0) {
+        if (modeSpd1 == 0) {
             if (self.pressingRight)
                 self.spdX = self.maxSpd;
             else if (self.pressingLeft)
@@ -134,8 +156,8 @@ Tank.onConnect = function(socket) {
         if (typeof Tank.list[data.id] != 'undefined') {
             Tank.list[data.id].status = data.status;
             if (data.status == 0) {
-                Tank.list[data.id].x = Math.floor((Math.random() * (Math.floor((Math.random() * 12) + 1)) * (1166/13 + Tank.list[data.id].size)) + 1);
-                Tank.list[data.id].y = Math.floor((Math.random() * (Math.floor((Math.random() * 6) + 1)) * (550/7 + Tank.list[data.id].size)) + 1);
+                Tank.list[data.id].x = Math.floor((Math.random() * (Math.floor((Math.random() * 12) + 1)) * (1166 / 13 + Tank.list[data.id].size)) + 1);
+                Tank.list[data.id].y = Math.floor((Math.random() * (Math.floor((Math.random() * 6) + 1)) * (550 / 7 + Tank.list[data.id].size)) + 1);
             }
         }
     });
