@@ -137,22 +137,22 @@ $(document).ready(function() {
         }
     }
     document.onkeyup = function(event) {
-        if (event.keyCode === 68) //d
+        if (event.keyCode === 68 || event.keyCode === 39) //d
             socket.emit('keyPress', {
             inputId: 'right',
             state: false
         });
-        else if (event.keyCode === 83) //s
+        else if (event.keyCode === 83 || event.keyCode === 40) //s
             socket.emit('keyPress', {
             inputId: 'down',
             state: false
         });
-        else if (event.keyCode === 65) //a
+        else if (event.keyCode === 65 || event.keyCode === 37) //a
             socket.emit('keyPress', {
             inputId: 'left',
             state: false
         });
-        else if (event.keyCode === 87) // w
+        else if (event.keyCode === 87 || event.keyCode === 38) // w
             socket.emit('keyPress', {
             inputId: 'up',
             state: false
