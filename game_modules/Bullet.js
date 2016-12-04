@@ -7,7 +7,7 @@ var Bullet = function(parent, x, y, angle, tankList) {
     var Bounds = GameBound();
     self.tankList = tankList;
     self.id = Math.random();
-    self.speed = 5;
+    self.speed = 2.5;
     self.spdX = Math.cos(self.angle) * self.speed;
     self.spdY = Math.sin(self.angle) * self.speed;
     self.parent = parent;
@@ -18,7 +18,7 @@ var Bullet = function(parent, x, y, angle, tankList) {
     var super_disBullet = self.disBullet;
     var super_bulletTank = self.bulletTank;
     self.update = function() {
-        if (self.timer++ > 200)
+        if (self.timer++ > 150)
             self.toRemove = true;
 
         super_update();

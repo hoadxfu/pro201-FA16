@@ -63,4 +63,4 @@ setInterval(function() {
         var socket = TANK_LIST[i];
         socket.emit('newPositions', pack);
     }
-}, 1000 / 30);
+}, 1000 / 60);
