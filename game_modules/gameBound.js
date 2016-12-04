@@ -7,7 +7,7 @@ function Wall(x1, y1, x2, y2) {
 
 var GameBound = function() {
     // Set gameBound
-    var _gameAreawidth = 1366 - 200;
+    var _gameAreawidth = 1166;
     var _gameAreaheight = 550;
 
     var Bounds = [];

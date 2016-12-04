@@ -17,8 +17,8 @@ var Tank = function(id, name, color, x, y, angle) {
     self.maxSpd = 3;
     self.size = 15;
     self.lastShootTime = 0;
-    self.shootRate = 300;
-    self.status = true;
+    self.shootRate = 400;
+    self.status = 0;
     var super_update = self.update;
     // var super_disPxtoPy = self.disPxtoPy;
     var super_disSegmentAtoPx = self.disSegmentAtoPx;
@@ -114,6 +114,7 @@ var Tank = function(id, name, color, x, y, angle) {
 Tank.list = {};
 Tank.onConnect = function(socket) {
     var tank = Tank(socket.id, socket.name, socket.color, socket.x, socket.y, socket.angle);
+    socket.emit('tankId', socket.id);
     socket.on('keyPress', function(data) {
         if (data.inputId === 'left')
             tank.pressingLeft = data.state;
@@ -129,6 +130,15 @@ Tank.onConnect = function(socket) {
     socket.on('mouseMove', function(data) {
         tank.mouseAngle = Math.atan2(data.y - tank.y, data.x - tank.x);
     });
+    socket.on('changeStatus', function(data) {
+        if (typeof Tank.list[data.id] != 'undefined') {
+            Tank.list[data.id].status = data.status;
+            if (data.status == 0) {
+                Tank.list[data.id].x = Math.floor((Math.random() * (Math.floor((Math.random() * 12) + 1)) * (1166/13 + Tank.list[data.id].size)) + 1);
+                Tank.list[data.id].y = Math.floor((Math.random() * (Math.floor((Math.random() * 6) + 1)) * (550/7 + Tank.list[data.id].size)) + 1);
+            }
+        }
+    });
 }
 Tank.onDisconnect = function(socket) {
     delete Tank.list[socket.id];
@@ -136,17 +146,19 @@ Tank.onDisconnect = function(socket) {
 Tank.update = function() {
     var pack = [];
     if (typeof Bullet.tankList != 'undefined') {
-      Tank.list = Bullet.tankList;
+        Tank.list = Bullet.tankList;
     }
     for (var i in Tank.list) {
         var tank = Tank.list[i];
         tank.update();
         pack.push({
+            id: tank.id,
             name: tank.name,
             color: tank.color,
             x: tank.x,
             y: tank.y,
             angle: tank.angle,
+            status: tank.status
         });
     }
     return pack;

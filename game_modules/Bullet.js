@@ -29,25 +29,26 @@ var Bullet = function(parent, x, y, angle, tankList) {
             if (re != 0) {
                 // self.toRemove = true;
                 if (re == 2) {
-                  self.angle = -self.angle;
-                  self.spdX = Math.cos(self.angle) * self.speed;
-                  self.spdY = Math.sin(self.angle) * self.speed;
+                    self.angle = -self.angle;
+                    self.spdX = Math.cos(self.angle) * self.speed;
+                    self.spdY = Math.sin(self.angle) * self.speed;
                 }
                 if (re == 1) {
-                  self.angle = (Math.PI-self.angle);
-                  self.spdX = Math.cos(self.angle) * self.speed;
-                  self.spdY = Math.sin(self.angle) * self.speed;
+                    self.angle = (Math.PI - self.angle);
+                    self.spdX = Math.cos(self.angle) * self.speed;
+                    self.spdY = Math.sin(self.angle) * self.speed;
                 }
 
             }
         }
-        for (var i in self.tankList) {
-            var tank = self.tankList[i];
-            if (super_bulletTank(self.x, self.y, tank.x, tank.y, self.size, tank.size) == false) {
-                //handle collision. ex: hp--;
-                self.tankList[i].status = false;
+        for (var i in self.tankList)
+            if (self.tankList[i].status == 0) {
+                var tank = self.tankList[i];
+                if (super_bulletTank(self.x, self.y, tank.x, tank.y, self.size, tank.size) == false) {
+                    //handle collision. ex: hp--;
+                    self.tankList[i].status = 1;
+                }
             }
-        }
     }
     Bullet.list[self.id] = self;
     return self;
