@@ -19,7 +19,7 @@ var GameBound = function() {
     Bounds.push(new Wall(0, 0, _gameAreawidth, 0));
     Bounds.push(new Wall(0, 0, 0, _gameAreaheight));
     Bounds.push(new Wall(0, _gameAreaheight, _gameAreawidth, _gameAreaheight));
-    Bounds.push(new Wall(_gameAreawidth, _gameAreaheight, _gameAreawidth, 0));
+    Bounds.push(new Wall(14 * width_cell, 0, 14 * width_cell, 7 * height_cell));
     // end
     // tuong ben trong Map
     // Bounds.push(new Wall(width_cell, 0, width_cell, height_cell));
@@ -67,4 +67,4 @@ var GameBound = function() {
     return Bounds;
 }
 
-module.exports = GameBound; 
+module.exports = GameBound;
