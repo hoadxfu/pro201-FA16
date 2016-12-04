@@ -18,7 +18,7 @@ var Bullet = function(parent, x, y, angle, tankList) {
     var super_disBullet = self.disBullet;
     var super_bulletTank = self.bulletTank;
     self.update = function() {
-        if (self.timer++ > 100)
+        if (self.timer++ > 200)
             self.toRemove = true;
 
         super_update();
