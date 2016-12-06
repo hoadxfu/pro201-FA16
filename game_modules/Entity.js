@@ -96,9 +96,9 @@ var Entity = function(x, y, angle) {
             } else {
               return 2;
             }
-          } else if ((dc1 <= size ) && newYPos <= yMin+5){
+          } else if ((dc1 <= size || dq1 <= size/2) && newYPos <= yMin+5){
             return 4;
-          } else if ((dc2 <= size ) && newYPos >= yMax-5){
+          } else if ((dc2 <= size || dq2 <= size) && newYPos >= yMax-5){
             return 3;
           } else {
             return 0;
@@ -111,9 +111,9 @@ var Entity = function(x, y, angle) {
             } else {
               return 4;
             }
-          } else if ((dc1 <= size ) && (newXPos <= xMin || xq <= xMin)){
+          } else if ((dc1 <= size && newXPos <= xMin) || (dq1 <= size/2 && xq <= xMin)){
             return 1;
-          } else if ((dc2 <= size ) && (newXPos >= xMax-5 || xq >= xMax)){
+          } else if ((dc2 <= size && newXPos >= xMax) || (dq2 <= 2*size && xq >= xMax)){
             return 2;
           } else {
             return 0;
