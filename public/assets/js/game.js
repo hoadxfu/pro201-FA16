@@ -176,7 +176,7 @@ $(document).ready(function() {
 
     var playShotAudio;
     document.onmousedown = function(event) {
-        if (countBullet < 5 && logged && event.button == 0) {
+        if (countBullet < 5 && logged && !died && event.button == 0) {
             socket.emit('keyPress', {
                 inputId: 'attack',
                 state: true
