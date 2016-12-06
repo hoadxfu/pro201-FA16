@@ -60,23 +60,19 @@ var Entity = function(x, y, angle) {
 
 
     self.disSegmentAtoPx = function(x1, y1, x2, y2, size, angle) {
-        Math.sign = Math.sign || function(x) {
-            x = +x; // convert to a number
-            if (x === 0 || isNaN(x)) {
-                return Number(x);
-            }
-            return x > 0 ? 1 : -1;
-        }
+        // Math.sign = Math.sign || function(x) {
+        //     x = +x; // convert to a number
+        //     if (x === 0 || isNaN(x)) {
+        //         return Number(x);
+        //     }
+        //     return x > 0 ? 1 : -1;
+        // }
 
-        var xMin = Math.min(x1, x2) - size;
-        var xMax = Math.max(x1, x2) + size;
-        var yMin = Math.min(y1, y2) - size;
-        var yMax = Math.max(y1, y2) + size;
+        var xMin = Math.min(x1, x2) -2 ;
+        var xMax = Math.max(x1, x2) + 2;
+        var yMin = Math.min(y1, y2) - 2;
+        var yMax = Math.max(y1, y2) + 2;
 
-        var xMinQ = Math.min(x1, x2) - (size / 2 + 1);
-        var xMaxQ = Math.max(x1, x2) + (size / 2 + 1);
-        var yMinQ = Math.min(y1, y2) - (size / 2 + 1);
-        var yMaxQ = Math.max(y1, y2) + (size / 2) + 1;
         // tam hinh tron tank
         var newXPos = self.x + self.spdX;
         var newYPos = self.y + self.spdY;
@@ -85,22 +81,61 @@ var Entity = function(x, y, angle) {
         var yq = newYPos + 1.5 * size * Math.sin(angle);
         var dis = Math.abs(((y2 - y1) * (xq - x1) - (x2 - x1) * (yq - y1))) / (Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1)));
         var distance = ((y2 - y1) * (newXPos - x1) - (x2 - x1) * (newYPos - y1)) / (Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1)));
-        if ((Math.abs(distance) <= size && (newXPos >= xMin && newXPos < xMax) && (newYPos >= yMin && newYPos < yMax)) ||
-            (dis <= (size / 2 + 1) && (xq >= xMinQ && xq < xMaxQ) && (yq >= yMinQ && yq < yMaxQ))) {
-            if (Math.sign(distance) < 0) {
-                if (self.x < x1 && self.x < x2) {
-                    return 1 //left
-                } else {
-                    return 3; //under
-                }
+
+        var dc1 = self.disPxtoPy(newXPos, newYPos, xMin, yMin);
+        var dq1 = self.disPxtoPy(xq, yq, xMin, yMin);
+        var dc2 = self.disPxtoPy(newXPos, newYPos, xMax, yMax);
+        var dq2 = self.disPxtoPy(xq, xq, xMax, yMax);
+
+        var sign = Math.sign(distance);
+        if (x1 == x2) {
+          if ((Math.abs(distance) <= size && newYPos < yMax && newYPos > yMin) ||
+                (dis <= (size / 2 + 1) && yq > yMin && yq < yMax)) {
+            if (sign < 0) {
+              return 1;
             } else {
-                if (self.x > x1 && self.x > x2) {
-                    return 2; //right
-                } else {
-                    return 4; //on
-                }
+              return 2;
             }
+          } else if ((dc1 <= size || dq1 <= size/2) && newYPos <= yMin+5){
+            return 4;
+          } else if ((dc2 <= size || dq2 <= size/2) && newYPos >= yMax-5){
+            return 3;
+          } else {
+            return 0;
+          }
+        } else {
+          if ((Math.abs(distance) <= size && newXPos < xMax && newXPos > xMin) ||
+                (dis <= (size / 2 + 1) && xq > xMin && xq < xMax)) {
+            if (sign < 0) {
+              return 3;
+            } else {
+              return 4;
+            }
+          } else if ((dc1 <= size || dq1 <= size/2) && newXPos <= xMin+5){
+            return 1;
+          } else if ((dc2 <= size || dq2 <= size/2) && newXPos >= xMax-5){
+            return 2;
+          } else {
+            return 0;
+          }
         }
+
+        // if ((Math.abs(distance) <= size && (newXPos >= xMin && newXPos < xMax) && (newYPos >= yMin && newYPos < yMax)) ||
+        //     (dis <= (size / 2 + 1) && (xq >= xMinQ && xq < xMaxQ) && (yq >= yMinQ && yq < yMaxQ))) {
+        //     if (Math.sign(distance) < 0) {
+        //         if (self.x < x1 && self.x < x2) {
+        //             return 1 //left
+        //         } else {
+        //             return 3; //under
+        //         }
+        //     } else {
+        //         if (self.x > x1 && self.x > x2) {
+        //             return 2; //right
+        //         } else {
+        //             return 4; //on
+        //         }
+        //     }
+        // }
         return 0;
     }
 
