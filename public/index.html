@@ -6,7 +6,7 @@
         <title>PRO201 Last Project</title>
 
         <!-- Font -->
-        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
 
         <!-- main css -->
         <link href="assets/css/style.css" rel="stylesheet">
@@ -25,14 +25,35 @@
             </form> -->
             <div class="game-area">
                 <canvas id="game-area"></canvas>
+                <div class="game-info">
+                    <div class="game-notify-item your-scoreboard">
+                        <span id="count-bullet">0</span>
+                        <strong>Score: </strong><span id="kill-score">0</span><br/>
+                        <strong>Dead: </strong><span id="dead-score">0</span>
+                    </div>
+                    <div class="game-notify-item game-notify">
+                        <div class="first-mess">
+                            <strong>Welcome to Hulk Tank!!!</strong>
+                        </div>
+                        <div class="second-mess">
+                            <strong>Have fun...</strong>
+                        </div>
+                    </div>
+                    <div class="game-notify-item game-scoreboard">
+                        <strong>Top player: </strong><span id="top-player">PC (0 kill, 0 dead)</span><br/>
+                        <strong>Online: </strong><span id="online">0</span>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="game-over">
-            <h1>You lose!!!</h1>
-            <h2>Press Space to continue</h2>
+            <div class="scoreboard">
+                <h1>Your score</h1>
+                <h2>Kill: <span id="kill-score">0</span>/ Dead: <span id="dead-score">0</span></h2>
+                <h2>Press Space to continue</h2>
+                <img src="assets/images/youLose.jpg" alt="loser" />
+            </div>
         </div>
-        <!-- mgspack -->
-        <script src="https://rawgit.com/kawanet/msgpack-lite/master/dist/msgpack.min.js"></script>
         <!-- Define socket.io -->
         <script src="assets/js/socket.io.js"></script>
         <!-- jQuery -->

@@ -1,5 +1,5 @@
 html, body {
-    font-family: "Roboto", sans-serif;
+    font-family: "Roboto Slab", sans-serif;
     height: 100%;
     margin: 0;
     padding: 0;
@@ -12,40 +12,49 @@ html, body {
 /*Login Form*/
 
 .login {
-    background:  url(../images/thumb2.jpg) no-repeat;
-	background-size: cover;
+    background: url(../images/thumb2.jpg) no-repeat;
+    background-size: cover;
     color: #fff;
     height: 100%;
 }
 
 .login form {
-    height: 100%;
+    position: relative;
+    top: 45%;
+    background-color: #fff;
+    width: 400px;
+    display: block;
+    margin: 0 auto;
+    padding: 10px 0px;
+    opacity: 0.8;
 }
 
 .login input[type="text"] {
-    color: #fff;
+    color: #000;
     background: transparent;
     border: none;
-    border-bottom: 1px solid #fff;
+    border-bottom: 1px solid rgba(81, 203, 238, 1);
     padding: 10px;
     width: 350px;
     line-height: 1.7em;
     font-size: 18px;
     display: block;
     margin: 0 auto;
-    position: relative;
-    top: 50%;
+}
+
+.login input[type="text"]:focus {
+    box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+    border: 1px solid rgba(81, 203, 238, 1);
 }
 
 
 /*Game page*/
 
 .game {
-	background:  url(../images/khung1.jpg) no-repeat;  
-	background-size: cover;
+    background: url(../images/khung.jpg) no-repeat;
+    background-size: cover;
     color: #fff;
     height: 100%;
-	
     color: #fff;
     height: 100%;
     overflow-x: hidden;
@@ -62,7 +71,6 @@ html, body {
 }
 
 .game ul li .username {
-	
     font-weight: bold;
 }
 
@@ -71,7 +79,6 @@ html, body {
 }
 
 .game form {
-	
     position: fixed;
     bottom: 0;
     width: 100%;
@@ -86,24 +93,81 @@ html, body {
 }
 
 .game canvas {
-
-	
     border: 1px solid #ddd;
     display: block;
     margin: 0 auto;
-    margin-top: 55px;
+    margin-top: 49px;
+    background-color: #fff;
 }
 
-.game-over { 
-	
-	background:  url(../images/youlose1.jpg) no-repeat;  
-	background-size: 100%;
-	background-position: center;
-    color: #fff;
+.game .game-info {
+    width: 1168px;
+    display: block;
+    margin: 0 auto;
+}
+
+.game .game-info .game-notify-item {
+    margin-top: 10px;
+    background-color: #fff;
+    color: #333;
+    padding: 5px;
+    max-height: 44px;
+    height: 44px;
+    float: left;
+    overflow: hidden;
+}
+
+.game .game-info .your-scoreboard {
+    width: 150px;
+}
+
+.game .game-info .your-scoreboard #count-bullet {
+    float: right;
+    margin-right: 30px;
+    font-size: 30px;
+}
+
+.game .game-info .game-notify {
+    width: 568px;
+    margin-left: 10px;
+}
+
+.game .game-info .game-notify div {
+    width: 100%;
+}
+
+.game .game-info .game-scoreboard {
+    width: 400px;
+    margin-left: 10px;
+}
+
+.game-over {
+    background: url(../images/khung.jpg) no-repeat;
+    background-size: cover;
+    /*background-position: center;*/
     height: 100%;
-	width: 100%;
-	
+    width: 100%;
+}
+
+.game-over .scoreboard {
+    background-color: #fff;
+    position: relative;
+    top: calc((100% - 450px)/2);
+    padding: 10px;
+    width: 500px;
+    height: 450px;
+    display: block;
+    margin: 0 auto;
+    opacity: 0.8;
     text-align: center;
-    color: rgb(255,0,0);
-    padding-top:0px;
+    color: #333;
+}
+
+.game-over .scoreboard img {
+    width: 250px;
+}
+
+.game-over h1 {
+    margin: 0;
+    padding: 10px;
 }

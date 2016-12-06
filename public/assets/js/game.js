@@ -18,6 +18,12 @@ var ctx = _gameArea.getContext('2d');
 var logged = false;
 var died = false;
 var tankId = null;
+var countBullet = 0;
+var topPlayer = {
+    name: 'PC',
+    killCount: 0,
+    deadCount: 0,
+}
 
 // loading audio
 var backgroundAudio = [
@@ -93,8 +99,8 @@ $(document).ready(function() {
     $('#login-form').submit(function() {
         tankname = $('#login-form input[name="tankname"]').val().trim();
         tankcolor = _COLORS[Math.floor((Math.random() * 11) + 0)];
-        tankXPos = Math.floor((Math.random() * (Math.floor((Math.random() * 13) + 1)) * (width_cell + 15)) + 1);
-        tankYPos = Math.floor((Math.random() * (Math.floor((Math.random() * 7) + 1)) * (height_cell + 15)) + 1);
+        tankXPos = Math.floor((Math.random() * (Math.floor((Math.random() * 12))) * width_cell) + 15);
+        tankYPos = Math.floor((Math.random() * (Math.floor((Math.random() * 6))) * height_cell) + 15);
         tank = new Tank(tankname, tankcolor, tankXPos, tankYPos, 0);
         currAudio.pause();
         logged = true;
@@ -125,7 +131,7 @@ $(document).ready(function() {
             inputId: 'up',
             state: true
         });
-        else if(died && event.keyCode === 32) {
+        if(died && event.keyCode === 32) {
             socket.emit('changeStatus', {
                 id: tankId,
                 status: 0
@@ -161,7 +167,7 @@ $(document).ready(function() {
 
     var playShotAudio;
     document.onmousedown = function(event) {
-        if (logged && event.button == 0) {
+        if (countBullet < 5 && logged && event.button == 0) {
             socket.emit('keyPress', {
                 inputId: 'attack',
                 state: true
@@ -205,10 +211,12 @@ $(document).ready(function() {
     });
 
     function gameOver() {
-        _gamePage.fadeOut();
-        _gameOver.show();
-        died = true;
-        logged = false;
+        if (!died) {
+            _gamePage.fadeOut();
+            _gameOver.show();
+            died = true;
+            logged = false;
+        }
     }
 
     socket.on('newPositions', function(data) {
@@ -218,6 +226,8 @@ $(document).ready(function() {
             if (data.tank[i].status == 0) {
                 (new Tank(data.tank[i].name, data.tank[i].color, data.tank[i].x, data.tank[i].y, data.tank[i].angle)).draw(ctx);
             } else if (data.tank[i].status == 1) {
+                $('.game-notify .first-mess').html($('.game-notify .second-mess').html());
+                $('.game-notify .second-mess').html('<span style="font-weight: strong; color: ' + data.tank[i].color + '">' + data.tank[i].name + '</span> was killed by ' + data.tank[i].killBy);
                 // a tank has just died
                 tankDiedAudio.play();
                 socket.emit('changeStatus', {
@@ -229,10 +239,29 @@ $(document).ready(function() {
                     gameOver();
                 }
             }
+            if (data.tank[i].id == tankId) {
+                countBullet = data.tank[i].countBullet;
+                $('.your-scoreboard #count-bullet').html(countBullet);
+                $('.your-scoreboard #kill-score').html(data.tank[i].killCount);
+                $('.your-scoreboard #dead-score').html(data.tank[i].deadCount);
+                $('.scoreboard #kill-score').html(data.tank[i].killCount);
+                $('.scoreboard #dead-score').html(data.tank[i].deadCount);
+            }
+            if (data.tank[i].killCount > topPlayer.killCount) {
+                topPlayer.name = data.tank[i].name;
+                topPlayer.killCount = data.tank[i].killCount;
+                topPlayer.deadCount = data.tank[i].deadCount;
+            } else if (data.tank[i].killCount == topPlayer.killCount && data.tank[i].deadCount < data.tank[i].deadCount) {
+                topPlayer.name = data.tank[i].name;
+                topPlayer.killCount = data.tank[i].killCount;
+                topPlayer.deadCount = data.tank[i].deadCount;
+            }
         }
 
         for (var i = 0; i < data.bullet.length; i++)
             (new Bullet(data.bullet[i].x, data.bullet[i].y, data.bullet[i].angle)).draw(ctx);
+        $('#top-player').html(topPlayer.name + ' (' + topPlayer.killCount + ' kill, ' + topPlayer.deadCount + ' dead)');
+        $('#online').html(data.onlinePlayer);
     });
 
 });

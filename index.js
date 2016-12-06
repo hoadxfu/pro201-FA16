@@ -6,6 +6,7 @@ var port = process.env.PORT || 3000;
 const uuid = require('uuid');
 var Tank = require('./game_modules/Tank.js');
 var Bullet = require('./game_modules/Bullet.js');
+var onlinePlayer = 0;
 
 server.listen(port, function() {
     console.log('Server listening at port %d', port);
@@ -15,7 +16,6 @@ server.listen(port, function() {
 app.use(express.static(__dirname + '/public'));
 
 var TANK_LIST = {};
-// var ROOM = [0];
 
 io.on('connection', function(socket) {
 
@@ -26,29 +26,16 @@ io.on('connection', function(socket) {
         socket.x = data.xPos;
         socket.y = data.yPos;
         socket.angle = data.angle;
-        // ROOM.forEach(function(room, index) {
-        //     if (typeof socket.room == 'undefined') {
-        //         if (room < 4) {
-        //             socket.room = index;
-        //             ROOM[socket.room]++;
-        //             return;
-        //         } else {
-        //             socket.room = ROOM.length;
-        //             ROOM.push(1);
-        //         }
-        //     }
-        // });
-        // socket.join('room ' + socket.room);
 
         TANK_LIST[socket.id] = socket;
+        onlinePlayer++;
 
         Tank.onConnect(socket);
     });
 
     socket.on('disconnect', function() {
-        // ROOM[socket.room]--;
-        // socket.leave('room ' + socket.room);
         delete TANK_LIST[socket.id];
+        onlinePlayer--;
         Tank.onDisconnect(socket);
     });
 
@@ -58,6 +45,7 @@ setInterval(function() {
     var pack = {
         tank: Tank.update(),
         bullet: Bullet.update(),
+        onlinePlayer: onlinePlayer,
     }
     for (var i in TANK_LIST) {
         var socket = TANK_LIST[i];

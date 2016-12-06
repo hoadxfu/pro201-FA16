@@ -18,7 +18,7 @@ var Bullet = function(parent, x, y, angle, tankList) {
     var super_disBullet = self.disBullet;
     var super_bulletTank = self.bulletTank;
     self.update = function() {
-        if (self.timer++ > 200)
+        if (self.timer++ > 1000)
             self.toRemove = true;
 
         super_update();
@@ -47,6 +47,9 @@ var Bullet = function(parent, x, y, angle, tankList) {
                 if (super_bulletTank(self.x, self.y, tank.x, tank.y, self.size, tank.size, tank.angle) == false) {
                     //handle collision. ex: hp--;
                     self.tankList[i].status = 1;
+                    self.tankList[i].killBy = self.parent;
+                    if (self.parent != i)
+                        self.tankList[self.parent].killCount++;
                 }
             }
     }
@@ -55,15 +58,26 @@ var Bullet = function(parent, x, y, angle, tankList) {
 }
 Bullet.list = {};
 
+Bullet.countTotal = function(tankId) {
+    var count = 0;
+    for (var i in Bullet.list) {
+        var bullet = Bullet.list[i];
+        if (bullet.parent == tankId) count++;
+    }
+    return count;
+}
+
 Bullet.update = function() {
     var pack = [];
     for (var i in Bullet.list) {
         var bullet = Bullet.list[i];
         bullet.update();
-        if (bullet.toRemove)
+        if (bullet.toRemove) {
+            bullet.tankList[bullet.parent].countBullet--;
             delete Bullet.list[i];
-        else
+        } else
             pack.push({
+                parent: bullet.parent,
                 x: bullet.x,
                 y: bullet.y,
             });

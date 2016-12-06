@@ -26,6 +26,10 @@ var Tank = function(id, name, color, x, y, angle) {
     self.lastShootTime = 0;
     self.shootRate = 400;
     self.status = 0;
+    self.killCount = 0;
+    self.deadCount = 0;
+    self.killBy = null;
+    self.countBullet = 0;
     var super_update = self.update;
     // var super_disPxtoPy = self.disPxtoPy;
     var super_disSegmentAtoPx = self.disSegmentAtoPx;
@@ -61,9 +65,12 @@ var Tank = function(id, name, color, x, y, angle) {
     }
 
     self.shootBullet = function(angle) {
+        // self.countBullet = Bullet.countTotal(self.id);
+        if (self.countBullet >= 5) return;
         var now = (new Date()).getTime();
         if (now - self.lastShootTime < this.shootRate) return;
         self.lastShootTime = now;
+        self.countBullet++;
         var b = Bullet(self.id, self.x + (self.size * 2 + 2) * Math.cos(self.angle),
             self.y + (self.size * 2 + 2) * Math.sin(self.angle), angle, Tank.list);
     }
@@ -114,8 +121,9 @@ Tank.onConnect = function(socket) {
         if (typeof Tank.list[data.id] != 'undefined') {
             Tank.list[data.id].status = data.status;
             if (data.status == 0) {
-                Tank.list[data.id].x = Math.floor((Math.random() * (Math.floor((Math.random() * 12))) * (1166 / 13 + Tank.list[data.id].size)) + 1);
-                Tank.list[data.id].y = Math.floor((Math.random() * (Math.floor((Math.random() * 6))) * (550 / 7 + Tank.list[data.id].size)) + 1);
+                Tank.list[data.id].x = Math.floor((Math.random() * (Math.floor((Math.random() * 12))) * 1166 / 13) +  + Tank.list[data.id].size);
+                Tank.list[data.id].y = Math.floor((Math.random() * (Math.floor((Math.random() * 6))) * 550 / 7) +  + Tank.list[data.id].size);
+                Tank.list[data.id].deadCount++;
             }
         }
     });
@@ -130,6 +138,7 @@ Tank.update = function() {
     }
     for (var i in Tank.list) {
         var tank = Tank.list[i];
+        var killBy = (tank.killBy == null) ? null : Tank.list[tank.killBy].name;
         tank.update();
         pack.push({
             id: tank.id,
@@ -138,7 +147,11 @@ Tank.update = function() {
             x: tank.x,
             y: tank.y,
             angle: tank.angle,
-            status: tank.status
+            status: tank.status,
+            countBullet: tank.countBullet,
+            killBy: killBy,
+            killCount: tank.killCount,
+            deadCount: tank.deadCount
         });
     }
     return pack;
