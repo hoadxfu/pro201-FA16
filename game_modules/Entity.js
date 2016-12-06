@@ -26,10 +26,10 @@ var Entity = function(x, y, angle) {
     }
 
     self.disBullet = function(x1, y1, x2, y2, size) {
-        var xMin = Math.min(x1, x2) - 2;
-        var xMax = Math.max(x1, x2) + 2;
-        var yMin = Math.min(y1, y2) - 2;
-        var yMax = Math.max(y1, y2) + 2;
+        var xMin = Math.min(x1, x2) - 5;
+        var xMax = Math.max(x1, x2) + 5;
+        var yMin = Math.min(y1, y2) - 5;
+        var yMax = Math.max(y1, y2) + 5;
         var distance;
         if (x1 == x2){
           distance = Math.abs(self.x - x1);
