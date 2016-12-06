@@ -89,31 +89,31 @@ var Entity = function(x, y, angle) {
 
         var sign = Math.sign(distance);
         if (x1 == x2) {
-          if ((Math.abs(distance) <= size && newYPos < yMax && newYPos > yMin) ||
-                (dis <= (size / 2 + 1) && yq > yMin && yq < yMax)) {
+          if ((Math.abs(distance) <= size  || dis <= size/2) && newYPos < yMax && newYPos > yMin
+                 ) {
             if (sign < 0) {
               return 1;
             } else {
               return 2;
             }
-          } else if ((dc1 <= size || dq1 <= size/2) && newYPos <= yMin+5){
+          } else if ((dc1 <= size ) && newYPos <= yMin+5){
             return 4;
-          } else if ((dc2 <= size || dq2 <= size/2) && newYPos >= yMax-5){
+          } else if ((dc2 <= size ) && newYPos >= yMax-5){
             return 3;
           } else {
             return 0;
           }
         } else {
-          if ((Math.abs(distance) <= size && newXPos < xMax && newXPos > xMin) ||
-                (dis <= (size / 2 + 1) && xq > xMin && xq < xMax)) {
+          if ((Math.abs(distance) <= size || dis <= size/2) && newXPos < xMax && newXPos > xMin
+                 ) {
             if (sign < 0) {
               return 3;
             } else {
               return 4;
             }
-          } else if ((dc1 <= size || dq1 <= size/2) && newXPos <= xMin+5){
+          } else if ((dc1 <= size ) && (newXPos <= xMin || xq <= xMin)){
             return 1;
-          } else if ((dc2 <= size || dq2 <= size/2) && newXPos >= xMax-5){
+          } else if ((dc2 <= size ) && (newXPos >= xMax-5 || xq >= xMax)){
             return 2;
           } else {
             return 0;
