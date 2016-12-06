@@ -60,13 +60,13 @@ var Entity = function(x, y, angle) {
 
 
     self.disSegmentAtoPx = function(x1, y1, x2, y2, size, angle) {
-        // Math.sign = Math.sign || function(x) {
-        //     x = +x; // convert to a number
-        //     if (x === 0 || isNaN(x)) {
-        //         return Number(x);
-        //     }
-        //     return x > 0 ? 1 : -1;
-        // }
+        Math.sign = Math.sign || function(x) {
+            x = +x; // convert to a number
+            if (x === 0 || isNaN(x)) {
+                return Number(x);
+            }
+            return x > 0 ? 1 : -1;
+        }
 
         var xMin = Math.min(x1, x2) -2 ;
         var xMax = Math.max(x1, x2) + 2;
