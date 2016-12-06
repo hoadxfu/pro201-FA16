@@ -73,7 +73,8 @@ Bullet.update = function() {
         var bullet = Bullet.list[i];
         bullet.update();
         if (bullet.toRemove) {
-            bullet.tankList[bullet.parent].countBullet--;
+            if (typeof bullet.tankList[bullet.parent] != 'undefined')
+                bullet.tankList[bullet.parent].countBullet--;
             delete Bullet.list[i];
         } else
             pack.push({

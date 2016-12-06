@@ -20,7 +20,8 @@ var died = false;
 var tankId = null;
 var countBullet = 0;
 var topPlayer = {
-    name: 'PC',
+    name: 'unkown',
+    color: '#333',
     killCount: 0,
     deadCount: 0,
 }
@@ -131,16 +132,15 @@ $(document).ready(function() {
             inputId: 'up',
             state: true
         });
-        if(died && event.keyCode === 32) {
-            socket.emit('changeStatus', {
-                id: tankId,
-                status: 0
-            });
-            _gameOver.hide();
-            _gamePage.show();
-            died = false;
-            logged = true;
-        }
+        // if(died && event.keyCode === 32) {
+        //     socket.emit('changeStatus', {
+        //         id: tankId,
+        //         status: 0
+        //     });
+        //     _gameOver.hide();
+        //     _gamePage.show();
+        //     died = false;
+        // }
     }
     document.onkeyup = function(event) {
         if (event.keyCode === 68 || event.keyCode === 39) //d
@@ -163,6 +163,15 @@ $(document).ready(function() {
             inputId: 'up',
             state: false
         });
+        if(died && event.keyCode === 32) {
+            socket.emit('changeStatus', {
+                id: tankId,
+                status: 0
+            });
+            _gameOver.hide();
+            _gamePage.show();
+            died = false;
+        }
     }
 
     var playShotAudio;
@@ -211,12 +220,9 @@ $(document).ready(function() {
     });
 
     function gameOver() {
-        if (!died) {
-            _gamePage.fadeOut();
-            _gameOver.show();
-            died = true;
-            logged = false;
-        }
+        _gamePage.fadeOut();
+        _gameOver.show();
+        died = true;
     }
 
     socket.on('newPositions', function(data) {
@@ -227,7 +233,7 @@ $(document).ready(function() {
                 (new Tank(data.tank[i].name, data.tank[i].color, data.tank[i].x, data.tank[i].y, data.tank[i].angle)).draw(ctx);
             } else if (data.tank[i].status == 1) {
                 $('.game-notify .first-mess').html($('.game-notify .second-mess').html());
-                $('.game-notify .second-mess').html('<span style="font-weight: strong; color: ' + data.tank[i].color + '">' + data.tank[i].name + '</span> was killed by ' + data.tank[i].killBy);
+                $('.game-notify .second-mess').html('<span style="font-weight: bold; color: ' + data.tank[i].color + '">' + data.tank[i].name + '</span> was killed by ' + data.tank[i].killBy);
                 // a tank has just died
                 tankDiedAudio.play();
                 socket.emit('changeStatus', {
@@ -249,10 +255,12 @@ $(document).ready(function() {
             }
             if (data.tank[i].killCount > topPlayer.killCount) {
                 topPlayer.name = data.tank[i].name;
+                topPlayer.color = data.tank[i].color;
                 topPlayer.killCount = data.tank[i].killCount;
                 topPlayer.deadCount = data.tank[i].deadCount;
             } else if (data.tank[i].killCount == topPlayer.killCount && data.tank[i].deadCount < data.tank[i].deadCount) {
                 topPlayer.name = data.tank[i].name;
+                topPlayer.color = data.tank[i].color;
                 topPlayer.killCount = data.tank[i].killCount;
                 topPlayer.deadCount = data.tank[i].deadCount;
             }
@@ -260,7 +268,7 @@ $(document).ready(function() {
 
         for (var i = 0; i < data.bullet.length; i++)
             (new Bullet(data.bullet[i].x, data.bullet[i].y, data.bullet[i].angle)).draw(ctx);
-        $('#top-player').html(topPlayer.name + ' (' + topPlayer.killCount + ' kill, ' + topPlayer.deadCount + ' dead)');
+        $('#top-player').html('<span style="font-weight: bold; color: ' + topPlayer.color + ';">' + topPlayer.name + '</span> (' + topPlayer.killCount + ' kill, ' + topPlayer.deadCount + ' dead)');
         $('#online').html(data.onlinePlayer);
     });
 

@@ -138,7 +138,7 @@ Tank.update = function() {
     }
     for (var i in Tank.list) {
         var tank = Tank.list[i];
-        var killBy = (tank.killBy == null) ? null : Tank.list[tank.killBy].name;
+        var killBy = (tank.killBy == null || typeof Tank.list[tank.killBy] == 'undefined') ? 'unknown' : Tank.list[tank.killBy].name;
         tank.update();
         pack.push({
             id: tank.id,
