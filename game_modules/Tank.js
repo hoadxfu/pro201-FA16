@@ -21,7 +21,7 @@ var Tank = function(id, name, color, x, y, angle) {
     // press mouse
     self.pressingAttack = false;
     self.mouseAngle = 0;
-    self.maxSpd = 1.5;
+    self.maxSpd = 3;
     self.size = 15;
     self.lastShootTime = 0;
     self.shootRate = 400;
