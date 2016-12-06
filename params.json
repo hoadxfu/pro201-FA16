@@ -1,0 +1,6 @@
+{
+  "name": "Pro201-fa16",
+  "tagline": "",
+  "body": "# pro201-FA16\r\nThis is the last project of subject Frontend Web-Developement<br/>\r\nMembers: HoaDX(leader), ChinVV, DuyNV, CuongPN<br/>\r\nLecturer: SonNT\r\n# Content\r\nThis project is a multiplayer game use HTML5, NodeJS and Websocket.\r\n# Technology\r\nHTML5, JavaScript, CSS<br/>\r\nNodeJS<br/>\r\nWebsocket: Socket.io\r\n# License\r\nCopyright (c) 2016 hoadx\r\n",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
