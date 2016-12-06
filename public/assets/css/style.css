@@ -12,7 +12,8 @@ html, body {
 /*Login Form*/
 
 .login {
-    background-color: #2C3E50;
+    background:  url(../images/thumb2.jpg) no-repeat;
+	background-size: cover;
     color: #fff;
     height: 100%;
 }
@@ -40,6 +41,11 @@ html, body {
 /*Game page*/
 
 .game {
+	background:  url(../images/khung1.jpg) no-repeat;  
+	background-size: cover;
+    color: #fff;
+    height: 100%;
+	
     color: #fff;
     height: 100%;
     overflow-x: hidden;
@@ -56,6 +62,7 @@ html, body {
 }
 
 .game ul li .username {
+	
     font-weight: bold;
 }
 
@@ -64,6 +71,7 @@ html, body {
 }
 
 .game form {
+	
     position: fixed;
     bottom: 0;
     width: 100%;
@@ -78,14 +86,24 @@ html, body {
 }
 
 .game canvas {
+
+	
     border: 1px solid #ddd;
     display: block;
     margin: 0 auto;
     margin-top: 55px;
 }
 
-.game-over {
+.game-over { 
+	
+	background:  url(../images/youlose1.jpg) no-repeat;  
+	background-size: 100%;
+	background-position: center;
+    color: #fff;
+    height: 100%;
+	width: 100%;
+	
     text-align: center;
-    color: #ddd;
-    padding-top: 250px;
+    color: rgb(255,0,0);
+    padding-top:0px;
 }

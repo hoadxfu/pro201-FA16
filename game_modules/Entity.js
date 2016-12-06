@@ -26,24 +26,56 @@ var Entity = function(x, y, angle) {
     }
 
     self.disBullet = function(x1, y1, x2, y2, size) {
-        var xMin = Math.min(x1, x2) - 2 * size;
-        var xMax = Math.max(x1, x2) + 2 * size;
-        var yMin = Math.min(y1, y2) - 2 * size;
-        var yMax = Math.max(y1, y2) + 2 * size;
+        var xMin = Math.min(x1, x2);
+        var xMax = Math.max(x1, x2);
+        var yMin = Math.min(y1, y2);
+        var yMax = Math.max(y1, y2);
         var distance;
-        if (x1 == x2)
-            distance = Math.abs(self.x - x1);
-        if (y1 == y2)
-            distance = Math.abs(self.y - y1);
-        if (distance < 3 * size && (self.x >= xMin && self.x < xMax) && (self.y >= yMin && self.y < yMax)) {
+        if (x1 == x2){
+          distance = Math.abs(self.x - x1);
+          xMin -= size;
+          xMax += size;
+        }
+        if (y1 == y2){
+          distance = Math.abs(self.y - y1);
+          yMin -= size;
+          yMax += size;
+        }
+        if (distance <  size && (self.x >= xMin && self.x < xMax) && (self.y >= yMin && self.y < yMax)) {
             if (x1 == x2) {
                 return 1;
             } else {
                 return 2;
             }
         }
+        // else if ((distance < size) && (self.x < xMin || self.x >= xMax) && (self.y >= yMin && self.y < yMax)) {
+        //   return 1;
+        // } else if ((distance < size) && (self.y < yMin || self.y >= yMax) && (self.x >= xMin && self.x < xMax)) {
+        //   return 2;
+        // }
         return 0;
     }
+
+    // // backup
+    // self.disBullet = function(x1, y1, x2, y2, size) {
+    //     var xMin = Math.min(x1, x2) - 2 * size;
+    //     var xMax = Math.max(x1, x2) + 2 * size;
+    //     var yMin = Math.min(y1, y2) - 2 * size;
+    //     var yMax = Math.max(y1, y2) + 2 * size;
+    //     var distance;
+    //     if (x1 == x2)
+    //         distance = Math.abs(self.x - x1);
+    //     if (y1 == y2)
+    //         distance = Math.abs(self.y - y1);
+    //     if (distance < 3 * size && (self.x >= xMin && self.x < xMax) && (self.y >= yMin && self.y < yMax)) {
+    //         if (x1 == x2) {
+    //             return 1;
+    //         } else {
+    //             return 2;
+    //         }
+    //     }
+    //     return 0;
+    // }
 
     self.disSegmentAtoPx = function(x1, y1, x2, y2, size, angle) {
         Math.sign = Math.sign || function(x) {
