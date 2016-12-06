@@ -26,56 +26,38 @@ var Entity = function(x, y, angle) {
     }
 
     self.disBullet = function(x1, y1, x2, y2, size) {
-        var xMin = Math.min(x1, x2);
-        var xMax = Math.max(x1, x2);
-        var yMin = Math.min(y1, y2);
-        var yMax = Math.max(y1, y2);
+        var xMin = Math.min(x1, x2) - 2;
+        var xMax = Math.max(x1, x2) + 2;
+        var yMin = Math.min(y1, y2) - 2;
+        var yMax = Math.max(y1, y2) + 2;
         var distance;
         if (x1 == x2){
           distance = Math.abs(self.x - x1);
-          xMin -= size;
-          xMax += size;
         }
         if (y1 == y2){
           distance = Math.abs(self.y - y1);
-          yMin -= size;
-          yMax += size;
         }
+        var d1 = self.disPxtoPy(self.x, self.y, x1, y1);
+        var d2 = self.disPxtoPy(self.x, self.y, x2, y2);
+        var d3 = self.disPxtoPy(x1, y1, x2, y2) - 4;
         if (distance <  size && (self.x >= xMin && self.x < xMax) && (self.y >= yMin && self.y < yMax)) {
             if (x1 == x2) {
-                return 1;
+                if (Math.abs(d1-d2) < d3)
+                  return 1;
+                else {
+                  return 2;
+                }
             } else {
-                return 2;
+                if (Math.abs(d1-d2) < d3)
+                  return 2;
+                else {
+                  return 1;
+                }
             }
         }
-        // else if ((distance < size) && (self.x < xMin || self.x >= xMax) && (self.y >= yMin && self.y < yMax)) {
-        //   return 1;
-        // } else if ((distance < size) && (self.y < yMin || self.y >= yMax) && (self.x >= xMin && self.x < xMax)) {
-        //   return 2;
-        // }
         return 0;
     }
 
-    // // backup
-    // self.disBullet = function(x1, y1, x2, y2, size) {
-    //     var xMin = Math.min(x1, x2) - 2 * size;
-    //     var xMax = Math.max(x1, x2) + 2 * size;
-    //     var yMin = Math.min(y1, y2) - 2 * size;
-    //     var yMax = Math.max(y1, y2) + 2 * size;
-    //     var distance;
-    //     if (x1 == x2)
-    //         distance = Math.abs(self.x - x1);
-    //     if (y1 == y2)
-    //         distance = Math.abs(self.y - y1);
-    //     if (distance < 3 * size && (self.x >= xMin && self.x < xMax) && (self.y >= yMin && self.y < yMax)) {
-    //         if (x1 == x2) {
-    //             return 1;
-    //         } else {
-    //             return 2;
-    //         }
-    //     }
-    //     return 0;
-    // }
 
     self.disSegmentAtoPx = function(x1, y1, x2, y2, size, angle) {
         Math.sign = Math.sign || function(x) {
@@ -142,7 +124,7 @@ var Entity = function(x, y, angle) {
     self.bulletTank = function(xb, yb, xt, yt, sizeb, sizet, angle) {
         var xq = xt + 1.5 * sizet * Math.cos(angle);
         var yq = yt + 1.5 * sizet * Math.sin(angle);
-        if (self.disPxtoPy(xb, yb, xt, yt) <= (sizet + sizeb) || self.disPxtoPy(xb, yb, xq, yq) <= (sizet/2 + sizeb))
+        if (self.disPxtoPy(xb, yb, xt, yt) <= (sizet + sizeb) - 4 || self.disPxtoPy(xb, yb, xq, yq) <= (sizet/2 + sizeb) - 4)
             return false;
         return true;
     }

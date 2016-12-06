@@ -11,7 +11,7 @@ var GameBound = function() {
     var _gameAreaheight = 550;
 
     var Bounds = [];
-    var wallwidth = 3;
+    var wallwidth = 2;
     var height_cell = _gameAreaheight / 7;
     var width_cell = _gameAreawidth / 14;
 
