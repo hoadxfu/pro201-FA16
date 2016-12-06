@@ -1,6 +1,6 @@
 {
   "name": "PRO201-FA16",
   "tagline": "Frontend-web Developement",
-  "body": "# pro201-FA16\r\nThis is the last project of subject Frontend Web-Developement<br/>\r\nMembers: HoaDX(leader), ChinVV, DuyNV, CuongPN<br/>\r\nLecturer: SonNT\r\n# Content\r\nThis project is a multiplayer game use HTML5, NodeJS and Websocket.\r\n# Technology\r\nHTML5, JavaScript, CSS<br/>\r\nNodeJS<br/>\r\nWebsocket: Socket.io\r\n# License\r\nCopyright (c) 2016 hoadx\r\n",
+  "body": "# pro201-FA16\r\nThis is the last project of subject Frontend Web-Developement<br/>\r\nMembers: HoaDX(leader), ChinVV, DuyNV, CuongPN<br/>\r\nLecturer: SonNT\r\n# Content\r\nThis project is a multiplayer game use HTML5, NodeJS and Websocket.\r\n# Technology\r\nHTML5, JavaScript, CSS<br/>\r\nNodeJS: express, socket.io<br/>\r\n# Install\r\nOpen terminal in source code folder and run\r\n<code>npm start</code>\r\nor\r\n<code>node .</code><br/>\r\nAfter that you can go <code>http://localhost:3000</code> to test.\r\n# License\r\nCopyright (c) 2016 hoadx\r\n",
   "note": "Don't delete this file! It's used internally to help with page regeneration."
 }
