@@ -8,9 +8,10 @@ This project is a multiplayer game use HTML5, NodeJS and Websocket.
 HTML5, JavaScript, CSS<br/>
 NodeJS: express, socket.io<br/>
 # Install
-Open terminal and run
+Open terminal in source code folder and run
 <code>npm start</code>
 or
-<code>node .</code>
+<code>node .</code><br/>
+After that you can go <code>http://localhost:3000</code> to test.
 # License
 Copyright (c) 2016 hoadx
