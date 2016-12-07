@@ -48,7 +48,7 @@ var Bullet = function(parent, x, y, angle, tankList) {
                     //handle collision. ex: hp--;
                     self.tankList[i].status = 1;
                     self.tankList[i].killBy = self.parent;
-                    if (self.parent != i)
+                    if (self.parent != i && typeof self.tankList[self.parent] != 'undefined')
                         self.tankList[self.parent].killCount++;
                 }
             }
