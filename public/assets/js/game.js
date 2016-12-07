@@ -269,7 +269,7 @@ $(document).ready(function() {
         for (var i = 0; i < data.bullet.length; i++)
             (new Bullet(data.bullet[i].x, data.bullet[i].y, data.bullet[i].angle)).draw(ctx);
         $('#top-player').html('<span style="font-weight: bold; color: ' + topPlayer.color + ';">' + topPlayer.name + '</span> (' + topPlayer.killCount + ' kill, ' + topPlayer.deadCount + ' dead)');
-        $('#online').html(data.onlinePlayer);
+        // $('#online').html(data.onlinePlayer);
     });
 
 });
